@@ -1,0 +1,3 @@
+local OutgoingProfanityFilter, NS = ...
+
+NS.ReplacementPreferences = {}

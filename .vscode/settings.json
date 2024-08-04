@@ -1,0 +1,14 @@
+{
+  "Lua.diagnostics.globals": [
+    "SlashCmdList",
+    "C_KeyBindings",
+    "print",
+    "pairs",
+    "DEFAULT_CHAT_FRAME",
+    "InterfaceOptions_AddCategory",
+    "Settings",
+    "MinimalSliderWithSteppersMixin",
+    "InterfaceOptionsFrame_OpenToCategory",
+    "ReloadUI"
+  ]
+}
