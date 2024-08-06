@@ -1,4 +1,3 @@
--- local OutgoingProfanityFilter, OPF = ...
 -- Function to update the text area with highlighted text when searching
 function OutgoingProfanityFilterUpdateTextArea()
     local textArea = _G["OPFConfigWordsToReplaceTextArea"]
@@ -9,9 +8,11 @@ function OutgoingProfanityFilterUpdateTextArea()
     local search = searchBox:GetText() or ""
 
     if (wordsToReplaceString ~= "") then
-        local highlightedText = OutgoingProfanityFilterHighlightText(
-                                    wordsToReplaceString, search)
-        textArea:SetText(highlightedText)
+        local updatedTextWithHighlights =
+            OutgoingProfanityFilterHighlightText(wordsToReplaceString, search)
+        if (updatedTextWithHighlights ~= "") then
+            textArea:SetText(updatedTextWithHighlights)
+        end
     end
 
     if search ~= "" then
@@ -20,5 +21,3 @@ function OutgoingProfanityFilterUpdateTextArea()
         searchLabel:Show()
     end
 end
-
--- OPF["WTR"]["UpdateTextArea"] = UpdateTextArea;

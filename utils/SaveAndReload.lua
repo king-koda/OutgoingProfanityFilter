@@ -1,4 +1,4 @@
--- local OutgoingProfanityFilter, OPF = ...
+-- function for saving and reloading the addon after inserting new words to replace
 function OutgoingProfanityFilterSaveAndReload()
     local textArea = _G["OPFConfigWordsToReplaceTextArea"]
     local editorFrame = _G["OPFConfigFrame"]

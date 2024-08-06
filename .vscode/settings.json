@@ -9,6 +9,7 @@
     "Settings",
     "MinimalSliderWithSteppersMixin",
     "InterfaceOptionsFrame_OpenToCategory",
-    "ReloadUI"
+    "ReloadUI",
+    "UIPanelWindows"
   ]
 }

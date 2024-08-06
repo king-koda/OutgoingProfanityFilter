@@ -1,5 +1,4 @@
 local OutgoingProfanityFilter, NS = ...
-local category, layout
 
 -- Create a frame to handle events
 local eventFrame = CreateFrame("Frame")
@@ -10,6 +9,12 @@ OPF = {}
 eventFrame:RegisterEvent("ADDON_LOADED")
 
 OPF.currentIndex = 0
+
+UIPanelWindows["OPFConfigFrame"] = {
+    area = "center",
+    pushable = 0,
+    whileDead = true
+}
 
 local function InitializeAddon()
     -- Initialize saved variables
@@ -69,7 +74,10 @@ local function InitializeAddon()
 
         -- Assuming you have a frame named "OPFConfigFrame"
         if configFrame then
-            configFrame:Show()
+            ShowUIPanel(configFrame)
+            configFrame:SetFrameStrata("DIALOG")
+            configFrame:SetFrameLevel(100)
+            configFrame:SetFocus()
         else
             print("Configuration window not found.")
         end
@@ -79,10 +87,12 @@ local function InitializeAddon()
     SlashCmdList["OPF"] = function(msg)
         local textArea = _G["OPFConfigWordsToReplaceTextArea"]
 
-        -- Open the configuration window
+        -- populate the text area with the current wordsToReplaceString
         textArea:SetText(wordsToReplaceString or "")
 
+        -- Open the configuration window
         ShowConfigWindow()
+
     end
 
 end
