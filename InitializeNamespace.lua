@@ -1,3 +1,4 @@
 local OutgoingProfanityFilter, NS = ...
 
-NS.ReplacementPreferences = {}
+NS.WTR = {}
+NS.RP = {}

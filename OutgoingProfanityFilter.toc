@@ -3,8 +3,13 @@
 ## Author: king-koda @ GH
 ## Notes: 
 ## Version: 1.0.0
-## SavedVariables: MyTextEditorData
+## SavedVariables: OPFData
 
 InitializeNamespace.lua
 ReplacementPreferences.lua
+utils/FocusSearchResult.lua
+utils/SaveAndReload.lua
+utils/HighlightText.lua
+utils/UpdateTextArea.lua
 OutgoingProfanityFilter.lua
+OutgoingProfanityFilter.xml
