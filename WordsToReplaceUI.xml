@@ -1,0 +1,148 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <Frame name="WordsToReplaceUI" frameStrata="DIALOG" hidden="true" enableMouse="true" clampedToScreen="true" toplevel="true" inherits="BackdropTemplate, BasicFrameTemplateWithInset">
+        <Size>
+            <AbsDimension x="400" y="300"/>
+        </Size>
+        <Layers>
+            <Layer level="OVERLAY">
+                <FontString name="OPFConfigFrameTitle" inherits="GameFontHighlightLarge" text="Outgoing Profanity Filter">
+                    <Anchors>
+                        <Anchor point="TOP" relativePoint="TOP" x="0" y="-3"/>
+                    </Anchors>
+                    <Font>
+                        <FontHeight>
+                            <AbsValue val="16"/>
+                        </FontHeight>
+                        <Color r="1.0" g="0.82" b="0.0"/>
+                    </Font>
+                </FontString>
+            </Layer>
+            <Layer level="OVERLAY">
+                <FontString name="WordsToReplaceUISubtitle" inherits="GameFontNormal" text="Configure Words to Replace">
+                    <Anchors>
+                        <Anchor point="TOP" relativePoint="TOP" x="0" y="-35"/>
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+        <Frames hidden="true">
+            <Button name="InfoIconButton" inherits="UIPanelButtonTemplate" text='i'>
+                <Size>
+                    <AbsDimension x="20" y="16"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="RIGHT" relativeTo="WordsToReplaceUISubtitle" relativePoint="RIGHT" x="60" y="0"/>
+                </Anchors>
+                <NormalTexture file="Interface\\Buttons\\UI-HelpButton"/>
+                <Scripts>
+                    <OnClick>
+                            GameTooltip:SetOwner(self, "ANCHOR_NONE")
+                            GameTooltip:SetPoint("TOP", InfoIconButton, "BOTTOM", 0, -10)
+                            GameTooltip:SetText("A list of comma separated words should be provided into the gray text area.\nThis list may be searched through and altered at any time, with all of the changes persisted when pressing 'Save and Reload'.\nFor an extensive list of commonly used profanity to setup initially with, find the link in the addons Overview on Curseforge, and copy-and-paste the content.\n\nSupports:\n* commonly used symbols in words supported (-,.! etc...)\n* case-insensitivity\n* navigating the search results with buttons and Enter key\n* unfocusing and closing UI with Escape\n* automatic removal of duplicates on save\n* ",1,1,1,1,true)
+                            GameTooltip:Show()
+                        </OnClick>
+                    <OnLeave>
+                            GameTooltip:Hide()
+                        </OnLeave>
+                </Scripts>
+            </Button>
+            <EditBox name="OPFConfigWordsToReplaceSearchBox" inherits="InputBoxTemplate" autoFocus="false">
+                <Size>
+                    <AbsDimension x="335" y="20"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" x="-50" y="-60"/>
+                </Anchors>
+                <Scripts>
+                    <OnTextChanged>
+                        OutgoingProfanityFilterUpdateTextArea()
+                    </OnTextChanged>
+                    <OnEscapePressed>
+                       if self:GetText() ~= "" then
+                    self:SetText("")
+                else
+                    self:ClearFocus()
+                end                      
+                    </OnEscapePressed>
+                    <OnEnterPressed>
+                        OutgoingProfanityFilterFocusSearchResult(1)
+                    </OnEnterPressed>
+                </Scripts>
+            </EditBox>
+     <ScrollFrame name="OPFConfigWordsToReplaceScrollFrame" inherits="UIPanelScrollFrameTemplate" autoFocus="false">
+    <Size>
+        <AbsDimension x="364" y="200"/>
+    </Size>
+    <Anchors>
+        <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT" x="11" y="-85"/>
+        <Anchor point="BOTTOMRIGHT" relativeTo="$parent" relativePoint="BOTTOMRIGHT" x="-35" y="40"/>
+    </Anchors>
+    <ScrollChild name="OPFConfigWordsToReplaceTextAreaScrollChild">
+        <EditBox name="OPFConfigWordsToReplaceTextArea" inherits="BackdropTemplate" multiLine="true" autoFocus="false">
+            <Size>
+                <AbsDimension x="355" y="200"/>
+            </Size>
+            <Anchors>
+                <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT" x="0" y="0"/>
+                <Anchor point="BOTTOMRIGHT" relativeTo="$parent" relativePoint="BOTTOMRIGHT" x="-20" y="0"/>
+            </Anchors>
+            <FontString inherits="ChatFontNormal"/>
+            <Scripts>
+                <OnEscapePressed>
+                    self:ClearFocus()
+                </OnEscapePressed>
+            </Scripts>
+        </EditBox>
+    </ScrollChild>
+</ScrollFrame>
+            <Button name="OPFConfigWordsToReplaceSaveAndReloadButton" inherits="UIPanelButtonTemplate" text="Save and Reload">
+                <Size>
+                    <AbsDimension x="140" y="22"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="BOTTOM" relativePoint="BOTTOM" x="0" y="10"/>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        OutgoingProfanityFilterSaveAndReload()
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <Button name="OPFConfigWordsToReplacePreviousSearchResultButton" inherits="UIPanelButtonTemplate" text="&lt;">
+                <Size>
+                    <AbsDimension x="20" y="20"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="RIGHT" relativeTo="OPFConfigWordsToReplaceSearchBox" relativePoint="RIGHT" x="20" y="0"/>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        OutgoingProfanityFilterFocusSearchResult(-1)
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <Button name="OPFConfigWordsToReplaceNextSearchResultButton" inherits="UIPanelButtonTemplate" text="&gt;">
+                <Size>
+                    <AbsDimension x="20" y="20"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="RIGHT" relativeTo="OPFConfigWordsToReplaceSearchBox" relativePoint="RIGHT" x="40" y="0"/>
+                </Anchors>
+                <Scripts>
+                    <OnClick> 
+                        OutgoingProfanityFilterFocusSearchResult(1)
+                    </OnClick>/>
+                </Scripts>
+            </Button>
+        </Frames>
+        <Layers>
+            <Layer level="OVERLAY">
+                <FontString name="OPFConfigFrameWordsToReplaceSearchLabel" inherits="GameFontHighlight" text="Search...">
+                    <Anchors>
+                        <Anchor point="LEFT" relativeTo="OPFConfigWordsToReplaceSearchBox" relativePoint="LEFT" x="0" y="0"/>
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+    </Frame>
+</Ui>

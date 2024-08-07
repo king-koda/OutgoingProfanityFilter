@@ -1,22 +1,28 @@
 local OutgoingProfanityFilter, NS = ...
+OPF = {}
+OPF.currentIndex = 0
 
 -- Create a frame to handle events
 local eventFrame = CreateFrame("Frame")
 
-OPF = {}
-
 -- Register the ADDON_LOADED event
 eventFrame:RegisterEvent("ADDON_LOADED")
 
-OPF.currentIndex = 0
-
-UIPanelWindows["OPFConfigFrame"] = {
+UIPanelWindows["OPFConfigFrame"] = {area = "center", whileDead = true}
+UIPanelWindows["WordsToReplaceUI"] = {area = "center", whileDead = true}
+UIPanelWindows["DefaultWordReplacementUI"] = {area = "center", whileDead = true}
+UIPanelWindows["WordReplacementOverridesUI"] = {
     area = "center",
-    pushable = 0,
     whileDead = true
 }
 
 local function InitializeAddon()
+    local OPFConfigFrame = _G["OPFConfigFrame"]
+    local TextArea = _G["OPFConfigWordsToReplaceTextArea"]
+    local WordsToReplaceUI = _G["WordsToReplaceUI"]
+    local DefaultWordReplacementUI = _G["DefaultWordReplacementUI"]
+    local WordReplacementOverridesUI = _G["WordReplacementOverridesUI"]
+
     -- Initialize saved variables
     OPFData = OPFData or {}
 
@@ -24,6 +30,25 @@ local function InitializeAddon()
     local wordsToReplaceOverrides = NS.RP.wordsToReplaceOverrides
     local wordsToReplaceTable = OPFData["wordsToReplaceTable"] or {}
     local wordsToReplaceString = OPFData["wordsToReplaceString"] or ""
+
+    -- preserve reference to original function
+    local _ShowUIPanel = ShowUIPanel;
+
+    function ShowUIPanel(frame, ...)
+        local frameName = frame:GetName()
+        -- override the OnHide script for WordsToReplaceUI to show the OPFConfigFrame, 
+        -- to allow escape to navigate backwards, as well as close the UI entirely when on OPFConfigFrame
+        if (frameName == "WordsToReplaceUI" or frameName ==
+            "DefaultWordReplacementUI" or frameName ==
+            "WordReplacementOverridesUI") then
+            _ShowUIPanel(frame, ...)
+            frame:SetScript("OnHide", function()
+                ShowUIPanel(OPFConfigFrame)
+            end)
+        else
+            _ShowUIPanel(frame, ...)
+        end
+    end
 
     -- preserve reference to original function
     local _SendChatMessage = SendChatMessage;
@@ -65,35 +90,32 @@ local function InitializeAddon()
         _SendChatMessage(modifiedMessage, ...);
     end
 
-    -- Register the slash command
-    SLASH_OPF1 = "/opf"
+    -- Function to show the main frame
+    function ShowOPFConfigFrame() ShowUIPanel(OPFConfigFrame) end
 
-    -- Function to show the configuration window
-    local function ShowConfigWindow()
-        local configFrame = _G["OPFConfigFrame"]
-
-        -- Assuming you have a frame named "OPFConfigFrame"
-        if configFrame then
-            ShowUIPanel(configFrame)
-            configFrame:SetFrameStrata("DIALOG")
-            configFrame:SetFrameLevel(100)
-            configFrame:SetFocus()
-        else
-            print("Configuration window not found.")
-        end
-    end
-
-    -- Define the command handler function
-    SlashCmdList["OPF"] = function(msg)
-        local textArea = _G["OPFConfigWordsToReplaceTextArea"]
-
+    -- Functions to show the individual frames
+    function ShowWordsToReplaceUI()
         -- populate the text area with the current wordsToReplaceString
-        textArea:SetText(wordsToReplaceString or "")
-
-        -- Open the configuration window
-        ShowConfigWindow()
-
+        TextArea:SetText(wordsToReplaceString or "")
+        TextArea:SetBackdrop({
+            bgFile = "Interface/Tooltips/UI-Tooltip-Background",
+            tileSize = 400,
+            insets = {left = -10, right = -10, top = -10, bottom = -400}
+        })
+        ShowUIPanel(WordsToReplaceUI)
     end
+
+    function ShowDefaultWordReplacementUI()
+        ShowUIPanel(DefaultWordReplacementUI)
+    end
+
+    function ShowWordReplacementOverridesUI()
+        ShowUIPanel(WordReplacementOverridesUI)
+    end
+
+    -- Register the /opf command
+    SLASH_OPF1 = "/opf"
+    SlashCmdList["OPF"] = ShowOPFConfigFrame
 
 end
 

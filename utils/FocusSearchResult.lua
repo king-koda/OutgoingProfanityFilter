@@ -19,19 +19,33 @@ function OutgoingProfanityFilterFocusSearchResult(direction)
     local pos = OPF.searchResults[OPF.currentIndex]
     local currentText = textArea:GetText()
 
+    -- end of the search results, reset scroll and cursor
+    if (pos.v == nil) then
+        textArea:SetCursorPosition(0)
+        scrollFrame.ScrollBar:SetValue(0)
+        return
+    end
+
     -- Validate the result positions
     if pos.s < 1 or pos.e > #currentText or pos.s > pos.e then
         print("Invalid search result positions")
         return
     end
 
-    -- Highlight the search result
-    textArea:HighlightText(pos.s - 1, pos.e)
+    -- Get the font height
+    local font, fontHeight, fontWidth, fontFlags = textArea:GetFont()
+
     -- Set the cursor position to the start of the search result
     textArea:SetCursorPosition(pos.s - 1)
 
-    -- Scroll to the highlighted text
+    local lines = textArea:GetHeight() / fontHeight
+    local charsPerLine = #currentText / lines
+    local currentLine = pos.s / charsPerLine
+
     local scrollMin, scrollMax = scrollFrame.ScrollBar:GetMinMaxValues()
-    local newScroll = (pos.s - 1) / #currentText * scrollMax
+
+    -- Scroll to the highlighted text
+    local newScroll = ((math.floor(currentLine) - 6.5) / lines) * scrollMax
+
     scrollFrame.ScrollBar:SetValue(newScroll)
 end

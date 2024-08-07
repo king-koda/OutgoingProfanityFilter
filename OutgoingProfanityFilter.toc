@@ -12,4 +12,6 @@ utils/SaveAndReload.lua
 utils/HighlightText.lua
 utils/UpdateTextArea.lua
 OutgoingProfanityFilter.lua
+DefaultWordReplacementUI.xml
+WordsToReplaceUI.xml
 OutgoingProfanityFilter.xml

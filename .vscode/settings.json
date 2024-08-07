@@ -10,6 +10,7 @@
     "MinimalSliderWithSteppersMixin",
     "InterfaceOptionsFrame_OpenToCategory",
     "ReloadUI",
-    "UIPanelWindows"
+    "UIPanelWindows",
+    "UISpecialFrames"
   ]
 }

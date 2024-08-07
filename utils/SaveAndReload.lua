@@ -1,7 +1,8 @@
 -- function for saving and reloading the addon after inserting new words to replace
 function OutgoingProfanityFilterSaveAndReload()
     local textArea = _G["OPFConfigWordsToReplaceTextArea"]
-    local editorFrame = _G["OPFConfigFrame"]
+    -- table to track if value in parsed string has already been encountered
+    local seen = {}
 
     local text = textArea:GetText()
     -- Remove newlines
@@ -11,13 +12,14 @@ function OutgoingProfanityFilterSaveAndReload()
 
     local wordsToReplaceTable = {}
     for value in string.gmatch(text, "([^,]+)") do
-        table.insert(wordsToReplaceTable, value)
+        if not seen[value] then
+            table.insert(wordsToReplaceTable, value)
+            seen[value] = true
+        end
     end
 
     OPFData["wordsToReplaceTable"] = wordsToReplaceTable
-    OPFData["wordsToReplaceString"] = text
+    OPFData["wordsToReplaceString"] = table.concat(wordsToReplaceTable, ",")
 
-    editorFrame:Hide()
-    print("Text saved!")
     ReloadUI()
 end
