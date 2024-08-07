@@ -45,16 +45,13 @@ function WordReplacementOverridesSaveAndReload()
     local wordReplacementOverridesLines =
         wordReplacementOverridesContent:GetNumChildren();
 
-    print('wordReplacementOverridesLines', wordReplacementOverridesLines)
     for i = 1, wordReplacementOverridesLines do
 
         local index =
             _G["WordReplacementOverridesLine" .. i .. "NonEditable"]:GetText()
         local value =
             _G["WordReplacementOverridesLine" .. i .. "Editable"]:GetText()
-        OPFData["deeznutz"][index] = value
-        -- print('index', index)
-        -- print('value', gabba[index])
+        OPFData.wordReplacementOverrides[index] = value
     end
 
     ReloadUI()

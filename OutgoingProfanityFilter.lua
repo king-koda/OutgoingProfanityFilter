@@ -12,15 +12,15 @@ UIPanelWindows["WordReplacementOverridesUI"] = {
     whileDead = true
 }
 
--- Initialize saved variables
-OPFData = OPFData or {
-    ["wordsToReplaceTable"] = {},
-    ["wordsToReplaceString"] = "",
-    ["defaultWordReplacementString"] = "",
-    ["deeznutz"] = {}
-}
-
 local function InitializeAddon()
+    -- Initialize saved variables
+    OPFData = OPFData or {
+        ["wordsToReplaceTable"] = {},
+        ["wordsToReplaceString"] = "",
+        ["defaultWordReplacementString"] = "",
+        ["wordReplacementOverrides"] = {}
+    }
+
     local OPFConfigFrame = _G["OPFConfigFrame"]
     local WordsToReplaceTextArea = _G["WordsToReplaceTextArea"]
     local DefaultWordReplacementTextArea = _G["DefaultWordReplacementTextArea"]
@@ -31,41 +31,38 @@ local function InitializeAddon()
     local wordsToReplaceTable = OPFData["wordsToReplaceTable"]
     local wordsToReplaceString = OPFData["wordsToReplaceString"]
     local defaultWordReplacementString = OPFData["defaultWordReplacementString"]
-    local wordReplacementOverrides = OPFData["deeznutz"]
+    local wordReplacementOverrides = OPFData["wordReplacementOverrides"]
 
-    print('wordReplacementOverrides', #wordReplacementOverrides)
-    print('defaultWordReplacementString', defaultWordReplacementString)
     -- preserve reference to original function
     local _ShowUIPanel = ShowUIPanel;
 
-    function ShowUIPanel(frame, ...)
-        local frameName = frame:GetName()
-        -- override the OnHide script for WordsToReplaceUI to show the OPFConfigFrame, 
-        -- to allow escape to navigate backwards, as well as close the UI entirely when on OPFConfigFrame
-        if (frameName == "WordsToReplaceUI" or frameName ==
-            "DefaultWordReplacementUI" or frameName ==
-            "WordReplacementOverridesUI") then
-            _ShowUIPanel(frame, ...)
-            frame:SetScript("OnHide", function()
-                ShowUIPanel(OPFConfigFrame)
-            end)
-        else
-            _ShowUIPanel(frame, ...)
-        end
-    end
+    -- function ShowUIPanel(frame, ...)
+    --     local frameName = frame:GetName()
+    --     -- override the OnHide script for WordsToReplaceUI to show the OPFConfigFrame, 
+    --     -- to allow escape to navigate backwards, as well as close the UI entirely when on OPFConfigFrame
+    --     if (frameName == "WordsToReplaceUI" or frameName ==
+    --         "DefaultWordReplacementUI" or frameName ==
+    --         "WordReplacementOverridesUI") then
+    --         _ShowUIPanel(frame, ...)
+    --         frame:SetScript("OnHide",
+    --                         function() _ShowUIPanel(OPFConfigFrame) end)
+    --     else
+    --         _ShowUIPanel(frame, ...)
+    --     end
+    -- end
 
     -- preserve reference to original function
     local _SendChatMessage = SendChatMessage;
 
-    -- local function replaceWordsWithOverrides(modifiedMessage)
-    --     for match, replacementStringOverride in pairs(wordReplacementOverrides) do
-    --         -- replace word with a unique override
-    --         modifiedMessage = modifiedMessage:gsub(match,
-    --                                                replacementStringOverride)
-    --     end
+    local function replaceWordsWithOverrides(modifiedMessage)
+        for match, replacementStringOverride in pairs(wordReplacementOverrides) do
+            -- replace word with a unique override
+            modifiedMessage = modifiedMessage:gsub(match,
+                                                   replacementStringOverride)
+        end
 
-    --     return modifiedMessage
-    -- end
+        return modifiedMessage
+    end
 
     local function replaceWords(modifiedMessage)
         for index, match in ipairs(wordsToReplaceTable) do
@@ -86,7 +83,7 @@ local function InitializeAddon()
         local modifiedMessage = string.lower(message)
 
         -- apply the overrides first before the catch all
-        -- modifiedMessage = replaceWordsWithOverrides(modifiedMessage)
+        modifiedMessage = replaceWordsWithOverrides(modifiedMessage)
         -- apply defaultReplacementString to all wordsToReplace
         modifiedMessage = replaceWords(modifiedMessage)
 
@@ -139,22 +136,37 @@ local function InitializeAddon()
         return line
     end
 
+    local function isTableEmpty(t)
+        for _ in pairs(t) do return false end
+        return true
+    end
+
     function ShowWordReplacementOverridesUI()
         local wss = _G["WordReplacementOverridesContent"]
-        print(#wordReplacementOverrides)
-        if (#wordReplacementOverrides ~= 0) then
-            local numberedIndex = 1
-            for index, value in ipairs(wordReplacementOverrides) do
-                print('index', index)
-                print('value', value)
-                createWordReplacementLine(wss, numberedIndex, index, value)
-                numberedIndex = numberedIndex + 1
+
+        -- local isEmpty = isTableEmpty(wordReplacementOverrides)
+        -- if (isEmpty == false) then
+        -- local numberedIndex = 1
+
+        print(#wordsToReplaceTable)
+
+        for index, match in ipairs(wordsToReplaceTable) do
+
+            if (wordReplacementOverrides[match] == nil) then
+                wordReplacementOverrides[match] = ""
             end
-        else
-            for index, match in ipairs(wordsToReplaceTable) do
-                createWordReplacementLine(wss, index, match, "")
-            end
+
+            createWordReplacementLine(wss, index, match,
+                                      wordReplacementOverrides[match])
         end
+        -- for index, value in pairs(wordReplacementOverrides) do
+        --     createWordReplacementLine(wss, numberedIndex, index, value)
+        --     numberedIndex = numberedIndex + 1
+        -- end
+        -- else
+
+        -- end
+
         ShowUIPanel(WordReplacementOverridesUI)
 
     end
@@ -162,6 +174,14 @@ local function InitializeAddon()
     -- Register the /opf command
     SLASH_OPF1 = "/opf"
     SlashCmdList["OPF"] = ShowOPFConfigFrame
+
+    -- local function SaveData()
+    --     OPFData["wordReplacementOverrides"] = {"example1", "example2", "example3"}
+    --     print("Data saved to OPFData['wordReplacementOverrides']")
+    -- end
+
+    -- -- Call SaveData and LoadData for testing
+    -- SaveData()
 
 end
 
