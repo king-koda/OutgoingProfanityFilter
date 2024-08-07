@@ -1,18 +1,18 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
-    <Frame name="DefaultWordReplacementUI" frameStrata="DIALOG" hidden="true" enableMouse="true" clampedToScreen="true" toplevel="true" inherits="BackdropTemplate, BasicFrameTemplateWithInset">
+    <Frame name="WordReplacementOverridesUI" frameStrata="DIALOG" hidden="true" enableMouse="true" clampedToScreen="true" toplevel="true" inherits="BackdropTemplate, BasicFrameTemplateWithInset">
         <Size>
             <AbsDimension x="400" y="300"/>
         </Size>
         <Layers>
             <Layer level="OVERLAY">
-                <FontString name="DefaultWordReplacementTitle" inherits="GameFontHighlightLarge" text="Outgoing Profanity Filter">
+                <FontString name="WordReplacementOverridesUITitle" inherits="GameFontHighlightLarge" text="Outgoing Profanity Filter">
                     <Anchors>
                         <Anchor point="TOP" relativePoint="TOP" x="0" y="-3"/>
                     </Anchors>                    
                 </FontString>
             </Layer>
             <Layer level="OVERLAY">
-                <FontString name="DefaultWordReplacementUISubtitle" inherits="GameFontNormal" text="Configure Default Word Replacement">
+                <FontString name="WordReplacementOverridesUISubtitle" inherits="GameFontNormal" text="Configure Word Replacement Overrides">
                     <Anchors>
                         <Anchor point="TOP" relativePoint="TOP" x="0" y="-35"/>
                     </Anchors>
@@ -20,17 +20,17 @@
             </Layer>
         </Layers>
         <Frames>
-            <Button name="DefaultWordReplacementInfoIconButton" inherits="UIPanelButtonTemplate" text='i'>
+            <Button name="WordReplacementOverridesUIInfoIconButton" inherits="UIPanelButtonTemplate" text='i'>
                 <Size>
                     <AbsDimension x="20" y="16"/>
                 </Size>
                 <Anchors>
-                    <Anchor point="TOPRIGHT" relativeTo="DefaultWordReplacementUI" relativePoint="TOPRIGHT" x="-15" y="-30"/>
+                    <Anchor point="TOPRIGHT" relativeTo="WordReplacementOverridesUI" relativePoint="TOPRIGHT" x="-15" y="-30"/>
                 </Anchors>
                 <Scripts>
                     <OnClick>
                             GameTooltip:SetOwner(self, "ANCHOR_NONE")
-                            GameTooltip:SetPoint("TOP", DefaultWordReplacementInfoIconButton, "BOTTOM", 0, -10)
+                            GameTooltip:SetPoint("TOP", WordReplacementOverridesUIInfoIconButton, "BOTTOM", 0, -10)
                             GameTooltip:SetText("A word or character should be provided in the input box below, that will be used when sending messages to replace any of the words included in the Words To Replace config.\n\nExample:\n* Default Replacement: $$\n* Words to Replace List: cow,chicken,muffin,donkey\n* Original Message: 'The silly COW chiCken had its DOnkey in a MUFFIN'\n* Sent Message: 'The silly $$ $$ had its $$ in a $$'",1,1,1,1,true)
                             GameTooltip:Show()
                         </OnClick>
@@ -39,9 +39,26 @@
                         </OnLeave>
                 </Scripts>
             </Button>
-            
+            <ScrollFrame name="WordReplacementOverridesScrollFrame" inherits="UIPanelScrollFrameTemplate">
+                <Size>
+                    <AbsDimension x="360" y="160"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativePoint="TOPLEFT" x="0" y="-80"/>
+                </Anchors>
+                <ScrollChild>
+                    <Frame name="WordReplacementOverridesContent">
+                        <Size>
+                            <AbsDimension x="360" y="180"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT" x="-30" y="-50" />
+                        </Anchors>
+                    </Frame>
+                </ScrollChild>
+            </ScrollFrame>
     
-        <EditBox name="DefaultWordReplacementTextArea" inherits="InputBoxTemplate" autoFocus="false">
+        <!-- <EditBox name="WordReplacementOverridesUITextArea" inherits="InputBoxTemplate" autoFocus="false">
             <Size>
                 <AbsDimension x="200" y="200"/>
             </Size>
@@ -54,9 +71,9 @@
                     self:ClearFocus()
                 </OnEscapePressed>
             </Scripts>
-        </EditBox>
+        </EditBox> -->
     
-            <Button name="DefaultWordReplacementSaveAndReloadButton" inherits="UIPanelButtonTemplate" text="Save and Reload">
+            <Button name="WordReplacementOverridesUISaveAndReloadButton" inherits="UIPanelButtonTemplate" text="Save and Reload">
                 <Size>
                     <AbsDimension x="140" y="22"/>
                 </Size>
@@ -65,7 +82,7 @@
                 </Anchors>
                 <Scripts>
                     <OnClick>
-                        DefaultWordReplacementSaveAndReload()
+                        WordReplacementOverridesSaveAndReload()
                     </OnClick>
                 </Scripts>
             </Button>

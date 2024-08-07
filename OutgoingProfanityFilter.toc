@@ -5,13 +5,12 @@
 ## Version: 1.0.0
 ## SavedVariables: OPFData
 
-InitializeNamespace.lua
-ReplacementPreferences.lua
 utils/FocusSearchResult.lua
 utils/SaveAndReload.lua
 utils/HighlightText.lua
 utils/UpdateTextArea.lua
 OutgoingProfanityFilter.lua
 ui/DefaultWordReplacementUI.xml
+ui/WordReplacementOverridesUI.xml
 ui/WordsToReplaceUI.xml
 ui/OutgoingProfanityFilter.xml

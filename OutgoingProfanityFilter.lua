@@ -1,12 +1,8 @@
 local OutgoingProfanityFilter, NS = ...
+
 OPF = {}
 OPF.currentIndex = 0
-
--- Create a frame to handle events
-local eventFrame = CreateFrame("Frame")
-
--- Register the ADDON_LOADED event
-eventFrame:RegisterEvent("ADDON_LOADED")
+OPF.searchResults = {}
 
 UIPanelWindows["OPFConfigFrame"] = {area = "center", whileDead = true}
 UIPanelWindows["WordsToReplaceUI"] = {area = "center", whileDead = true}
@@ -16,21 +12,29 @@ UIPanelWindows["WordReplacementOverridesUI"] = {
     whileDead = true
 }
 
+-- Initialize saved variables
+OPFData = OPFData or {
+    ["wordsToReplaceTable"] = {},
+    ["wordsToReplaceString"] = "",
+    ["defaultWordReplacementString"] = "",
+    ["deeznutz"] = {}
+}
+
 local function InitializeAddon()
     local OPFConfigFrame = _G["OPFConfigFrame"]
-    local TextArea = _G["OPFConfigWordsToReplaceTextArea"]
+    local WordsToReplaceTextArea = _G["WordsToReplaceTextArea"]
+    local DefaultWordReplacementTextArea = _G["DefaultWordReplacementTextArea"]
     local WordsToReplaceUI = _G["WordsToReplaceUI"]
     local DefaultWordReplacementUI = _G["DefaultWordReplacementUI"]
     local WordReplacementOverridesUI = _G["WordReplacementOverridesUI"]
 
-    -- Initialize saved variables
-    OPFData = OPFData or {}
+    local wordsToReplaceTable = OPFData["wordsToReplaceTable"]
+    local wordsToReplaceString = OPFData["wordsToReplaceString"]
+    local defaultWordReplacementString = OPFData["defaultWordReplacementString"]
+    local wordReplacementOverrides = OPFData["deeznutz"]
 
-    local replacementString = NS.RP.replacementString
-    local wordsToReplaceOverrides = NS.RP.wordsToReplaceOverrides
-    local wordsToReplaceTable = OPFData["wordsToReplaceTable"] or {}
-    local wordsToReplaceString = OPFData["wordsToReplaceString"] or ""
-
+    print('wordReplacementOverrides', #wordReplacementOverrides)
+    print('defaultWordReplacementString', defaultWordReplacementString)
     -- preserve reference to original function
     local _ShowUIPanel = ShowUIPanel;
 
@@ -54,7 +58,7 @@ local function InitializeAddon()
     local _SendChatMessage = SendChatMessage;
 
     -- local function replaceWordsWithOverrides(modifiedMessage)
-    --     for match, replacementStringOverride in pairs(wordsToReplaceOverrides) do
+    --     for match, replacementStringOverride in pairs(wordReplacementOverrides) do
     --         -- replace word with a unique override
     --         modifiedMessage = modifiedMessage:gsub(match,
     --                                                replacementStringOverride)
@@ -70,7 +74,7 @@ local function InitializeAddon()
             if (result ~= nil) then
                 -- replace word with a universal override
                 modifiedMessage = modifiedMessage:gsub(escapedMatch,
-                                                       replacementString)
+                                                       defaultWordReplacementString)
             end
         end
         return modifiedMessage
@@ -83,7 +87,7 @@ local function InitializeAddon()
 
         -- apply the overrides first before the catch all
         -- modifiedMessage = replaceWordsWithOverrides(modifiedMessage)
-        -- apply replacementString to all wordsToReplace
+        -- apply defaultReplacementString to all wordsToReplace
         modifiedMessage = replaceWords(modifiedMessage)
 
         -- call original function with the newly modified message
@@ -96,8 +100,8 @@ local function InitializeAddon()
     -- Functions to show the individual frames
     function ShowWordsToReplaceUI()
         -- populate the text area with the current wordsToReplaceString
-        TextArea:SetText(wordsToReplaceString or "")
-        TextArea:SetBackdrop({
+        WordsToReplaceTextArea:SetText(wordsToReplaceString or "")
+        WordsToReplaceTextArea:SetBackdrop({
             bgFile = "Interface/Tooltips/UI-Tooltip-Background",
             tileSize = 400,
             insets = {left = -10, right = -10, top = -10, bottom = -400}
@@ -106,11 +110,53 @@ local function InitializeAddon()
     end
 
     function ShowDefaultWordReplacementUI()
+        DefaultWordReplacementTextArea:SetText(
+            defaultWordReplacementString or "")
         ShowUIPanel(DefaultWordReplacementUI)
     end
 
+    local function createWordReplacementLine(parent, index, nonEditableText,
+                                             editableText)
+        local line = CreateFrame("Frame",
+                                 "WordReplacementOverridesLine" .. index, parent)
+        line:SetSize(340, 30)
+        line:SetPoint("TOPLEFT", parent, 10, -10 - (index - 1) * 35)
+
+        local nonEditable = line:CreateFontString(
+                                "WordReplacementOverridesLine" .. index ..
+                                    "NonEditable", "ARTWORK", "GameFontNormal")
+        nonEditable:SetSize(160, 30)
+        nonEditable:SetPoint("LEFT")
+        nonEditable:SetText(nonEditableText)
+
+        local editable = CreateFrame("EditBox",
+                                     "WordReplacementOverridesLine" .. index ..
+                                         "Editable", line, "InputBoxTemplate")
+        editable:SetSize(160, 30)
+        editable:SetPoint("LEFT", nonEditable, "RIGHT", 10, 0)
+        editable:SetText(editableText)
+
+        return line
+    end
+
     function ShowWordReplacementOverridesUI()
+        local wss = _G["WordReplacementOverridesContent"]
+        print(#wordReplacementOverrides)
+        if (#wordReplacementOverrides ~= 0) then
+            local numberedIndex = 1
+            for index, value in ipairs(wordReplacementOverrides) do
+                print('index', index)
+                print('value', value)
+                createWordReplacementLine(wss, numberedIndex, index, value)
+                numberedIndex = numberedIndex + 1
+            end
+        else
+            for index, match in ipairs(wordsToReplaceTable) do
+                createWordReplacementLine(wss, index, match, "")
+            end
+        end
         ShowUIPanel(WordReplacementOverridesUI)
+
     end
 
     -- Register the /opf command
@@ -118,6 +164,12 @@ local function InitializeAddon()
     SlashCmdList["OPF"] = ShowOPFConfigFrame
 
 end
+
+-- Create a frame to handle events
+local eventFrame = CreateFrame("Frame")
+
+-- Register the ADDON_LOADED event
+eventFrame:RegisterEvent("ADDON_LOADED")
 
 -- Event handler function
 eventFrame:SetScript("OnEvent", function(self, event, addonName)

@@ -4,29 +4,16 @@
         <Size>
             <AbsDimension x="400" y="300"/>
         </Size>
-         <Layers>
+        <Layers>
             <Layer level="OVERLAY">
                 <FontString name="OPFConfigFrameTitle" inherits="GameFontHighlightLarge" text="Outgoing Profanity Filter">
                     <Anchors>
                         <Anchor point="TOP" relativePoint="TOP" x="0" y="-3"/>
-                    </Anchors>
-                    <Font>
-                        <FontHeight>
-                            <AbsValue val="16"/>
-                        </FontHeight>
-                        <Color r="1.0" g="0.82" b="0.0"/>
-                    </Font>
+                    </Anchors>                
                 </FontString>
-                 
             </Layer>
         </Layers>
-        <!-- <Scripts>
-            <OnEscapePressed>
-                self:Hide()
-            </OnEscapePressed>
-        </Scripts> -->
         <Frames>
-               
             <Button name="ShowWordsToReplaceUIButton" inherits="UIPanelButtonTemplate" text="Configure Words To Replace">
                 <Size>
                     <AbsDimension x="300" y="35"/>
@@ -97,5 +84,5 @@
                 </Scripts>
             </Button>
         </Frames>
-    </Frame>    
+    </Frame>
 </Ui>

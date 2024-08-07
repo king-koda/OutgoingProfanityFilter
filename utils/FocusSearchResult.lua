@@ -1,7 +1,7 @@
 -- Function to focus the next or previous search result
 function OutgoingProfanityFilterFocusSearchResult(direction)
-    local textArea = _G["OPFConfigWordsToReplaceTextArea"]
-    local scrollFrame = _G["OPFConfigWordsToReplaceScrollFrame"]
+    local textArea = _G["WordsToReplaceTextArea"]
+    local scrollFrame = _G["WordsToReplaceScrollFrame"]
 
     if #OPF.searchResults == 0 then
         print("No search results found")
