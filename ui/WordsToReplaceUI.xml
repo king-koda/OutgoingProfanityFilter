@@ -48,7 +48,7 @@
                 </Anchors>
                 <Scripts>
                     <OnTextChanged>
-                        OutgoingProfanityFilterUpdateTextArea()
+                        OPF.WTR.UpdateTextArea()
                     </OnTextChanged>
                     <OnEscapePressed>
                        if self:GetText() ~= "" then
@@ -58,7 +58,7 @@
                 end                      
                     </OnEscapePressed>
                     <OnEnterPressed>
-                        OutgoingProfanityFilterFocusSearchResult(1)
+                        OPF.WTR.FocusSearchResult(1)
                     </OnEnterPressed>
                 </Scripts>
             </EditBox>
@@ -81,12 +81,15 @@
                         </Anchors>
                         <FontString inherits="ChatFontNormal"/>
                         <Scripts>
+              
                             <OnEscapePressed>
                     self:ClearFocus()
                 </OnEscapePressed>
                         </Scripts>
                     </EditBox>
                 </ScrollChild>
+                
+               
             </ScrollFrame>
             <Button name="WordsToReplaceSaveAndReloadButton" inherits="UIPanelButtonTemplate" text="Save and Reload">
                 <Size>
@@ -97,7 +100,7 @@
                 </Anchors>
                 <Scripts>
                     <OnClick>
-                        WordsToReplaceSaveAndReload()
+                        OPF.WTR.SaveAndReload()
                     </OnClick>
                 </Scripts>
             </Button>
@@ -110,7 +113,7 @@
                 </Anchors>
                 <Scripts>
                     <OnClick>
-                        OutgoingProfanityFilterFocusSearchResult(-1)
+                        OPF.WTR.FocusSearchResult(-1)
                     </OnClick>
                 </Scripts>
             </Button>
@@ -123,7 +126,7 @@
                 </Anchors>
                 <Scripts>
                     <OnClick> 
-                        OutgoingProfanityFilterFocusSearchResult(1)
+                        OPF.WTR.FocusSearchResult(1)
                     </OnClick>/>
                 </Scripts>
             </Button>

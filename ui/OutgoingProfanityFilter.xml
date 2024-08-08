@@ -19,11 +19,11 @@
                     <AbsDimension x="300" y="35"/>
                 </Size>
                 <Anchors>
-                    <Anchor point="CENTER" relativePoint="CENTER" x="0" y="70"/>
+                    <Anchor point="CENTER" relativeTo="OPFConfigFrameTitle" relativePoint="CENTER" x="0" y="-50"/>
                 </Anchors>
                 <Scripts>
                     <OnClick>
-                        ShowWordsToReplaceUI()
+                        OPF.ShowWordsToReplaceUI()
                     </OnClick>
                     <OnEnter>
                          local x, y = GetCursorPosition()
@@ -42,11 +42,11 @@
                     <AbsDimension x="300" y="35"/>
                 </Size>
                 <Anchors>
-                    <Anchor point="CENTER" relativePoint="CENTER" x="0" y="-5"/>
+                    <Anchor point="CENTER" relativeTo="OPFConfigFrameTitle" relativePoint="CENTER" x="0" y="-100"/>
                 </Anchors>
                 <Scripts>
                     <OnClick>
-                        ShowDefaultWordReplacementUI()
+                        OPF.ShowDefaultWordReplacementUI()
                     </OnClick>
                     <OnEnter>
                          local x, y = GetCursorPosition()
@@ -60,16 +60,16 @@
                     </OnLeave>
                 </Scripts>
             </Button>
-            <Button name="ShowWordReplacementOverridesUIButton" inherits="UIPanelButtonTemplate" text="Configure Word Replacement Overrides">>
+            <Button name="ShowWordReplacementOverridesUIButton" inherits="UIPanelButtonTemplate" text="Configure Word Replacement Overrides">
                 <Size>
                     <AbsDimension x="300" y="35"/>
                 </Size>
                 <Anchors>
-                    <Anchor point="CENTER" relativePoint="CENTER" x="0" y="-80"/>
+                    <Anchor point="CENTER" relativeTo="OPFConfigFrameTitle" relativePoint="CENTER" x="0" y="-150"/>
                 </Anchors>
                 <Scripts>
                     <OnClick>
-                        ShowWordReplacementOverridesUI()
+                        OPF.ShowWordReplacementOverridesUI()
                     </OnClick>
                     <OnEnter>
                          local x, y = GetCursorPosition()
@@ -81,6 +81,19 @@
                     <OnLeave>                        
                         GameTooltip:Hide()
                     </OnLeave>
+                </Scripts>
+            </Button>
+            <Button name="ResetAllToDefaults" inherits="UIPanelButtonTemplate" text="Reset all to Defaults">
+                <Size>
+                    <AbsDimension x="200" y="30"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="CENTER" relativePoint="CENTER" x="0" y="-100"/>
+                </Anchors>
+                <Scripts>
+                   <OnClick>
+            StaticPopup_Show("CONFIRM_OPF_RESET")
+                </OnClick>
                 </Scripts>
             </Button>
         </Frames>

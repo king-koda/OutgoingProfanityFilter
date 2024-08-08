@@ -1,37 +1,36 @@
 local OutgoingProfanityFilter, NS = ...
 
-OPF = {}
-OPF.currentIndex = 0
-OPF.searchResults = {}
-
-UIPanelWindows["OPFConfigFrame"] = {area = "center", whileDead = true}
-UIPanelWindows["WordsToReplaceUI"] = {area = "center", whileDead = true}
-UIPanelWindows["DefaultWordReplacementUI"] = {area = "center", whileDead = true}
-UIPanelWindows["WordReplacementOverridesUI"] = {
-    area = "center",
-    whileDead = true
-}
-
 local function InitializeAddon()
-    -- Initialize saved variables
-    OPFData = OPFData or {
-        ["wordsToReplaceTable"] = {},
-        ["wordsToReplaceString"] = "",
-        ["defaultWordReplacementString"] = "",
-        ["wordReplacementOverrides"] = {}
+    UIPanelWindows["OPFConfigFrame"] = {area = "center", whileDead = true}
+    UIPanelWindows["WordsToReplaceUI"] = {area = "center", whileDead = true}
+    UIPanelWindows["DefaultWordReplacementUI"] = {
+        area = "center",
+        whileDead = true
+    }
+    UIPanelWindows["WordReplacementOverridesUI"] = {
+        area = "center",
+        whileDead = true
     }
 
-    local OPFConfigFrame = _G["OPFConfigFrame"]
-    local WordsToReplaceTextArea = _G["WordsToReplaceTextArea"]
-    local DefaultWordReplacementTextArea = _G["DefaultWordReplacementTextArea"]
-    local WordsToReplaceUI = _G["WordsToReplaceUI"]
-    local DefaultWordReplacementUI = _G["DefaultWordReplacementUI"]
-    local WordReplacementOverridesUI = _G["WordReplacementOverridesUI"]
+    StaticPopupDialogs["CONFIRM_OPF_RESET"] = {
+        text = "Are you sure you want to reset all the addons settings to defaults?",
+        button1 = "YES",
+        button2 = "NO",
+        OnAccept = function()
+            OPFData = OPF.ResetSavedVariables()
+            ReloadUI()
+        end,
+        timeout = 0,
+        whileDead = true,
+        hideOnEscape = true,
+        preferredIndex = 3,
+        area = "center"
+    }
 
-    local wordsToReplaceTable = OPFData["wordsToReplaceTable"]
-    local wordsToReplaceString = OPFData["wordsToReplaceString"]
-    local defaultWordReplacementString = OPFData["defaultWordReplacementString"]
-    local wordReplacementOverrides = OPFData["wordReplacementOverrides"]
+    -- Initialize saved variables
+    OPFData = OPFData or OPF.ResetSavedVariables()
+
+    local OPFConfigFrame = _G["OPFConfigFrame"]
 
     -- preserve reference to original function
     local _ShowUIPanel = ShowUIPanel;
@@ -55,23 +54,32 @@ local function InitializeAddon()
     local _SendChatMessage = SendChatMessage;
 
     local function replaceWordsWithOverrides(modifiedMessage)
-        for match, replacementStringOverride in pairs(wordReplacementOverrides) do
-            -- replace word with a unique override
-            modifiedMessage = modifiedMessage:gsub(match,
-                                                   replacementStringOverride)
+        for word, override in pairs(OPFData["wordsToReplaceWithOverridesTable"]) do
+            if (override ~= OPF.NIL) then
+                local escapedWord = OPF.EscapeText(word)
+
+                -- replace word with a unique override
+                modifiedMessage = modifiedMessage:gsub(escapedWord, override)
+            end
         end
 
         return modifiedMessage
     end
 
     local function replaceWords(modifiedMessage)
-        for index, match in ipairs(wordsToReplaceTable) do
-            local escapedMatch = match:gsub("%-", "%%-")
-            local result = string.find(modifiedMessage, escapedMatch)
+        -- TODO: if not as performant, could consider breaking the message apart and seeing if those words exist in the OPFData["wordsToReplaceString"] 
+        -- and only replacing if they do, rather than iterating through the entire OPFData["wordsToReplaceWithOverridesTable"]
+        for word, override in pairs(OPFData["wordsToReplaceWithOverridesTable"]) do
+            local escapedWord = OPF.EscapeText(word)
+
+            -- do a quick check to see if the word is in the message before doing a replace
+            local result = string.find(modifiedMessage, escapedWord)
             if (result ~= nil) then
+                print('escapedWord', escapedWord)
+
                 -- replace word with a universal override
-                modifiedMessage = modifiedMessage:gsub(escapedMatch,
-                                                       defaultWordReplacementString)
+                modifiedMessage = modifiedMessage:gsub(escapedWord,
+                                                       OPFData["defaultWordReplacement"])
             end
         end
         return modifiedMessage
@@ -96,92 +104,46 @@ local function InitializeAddon()
 
     -- Functions to show the individual frames
     function ShowWordsToReplaceUI()
-        -- populate the text area with the current wordsToReplaceString
-        WordsToReplaceTextArea:SetText(wordsToReplaceString or "")
-        WordsToReplaceTextArea:SetBackdrop({
+        local ui = _G["WordsToReplaceUI"]
+        local textArea = _G["WordsToReplaceTextArea"]
+
+        -- populate the text area with the current OPFData["wordsToReplaceString"]
+        textArea:SetText(OPFData["wordsToReplaceString"] or "")
+        textArea:SetBackdrop({
             bgFile = "Interface/Tooltips/UI-Tooltip-Background",
             tileSize = 400,
             insets = {left = -10, right = -10, top = -10, bottom = -400}
         })
-        ShowUIPanel(WordsToReplaceUI)
+        ShowUIPanel(ui)
     end
 
-    function ShowDefaultWordReplacementUI()
+    local function ShowDefaultWordReplacementUI()
+        local ui = _G["DefaultWordReplacementUI"]
+
+        local DefaultWordReplacementTextArea =
+            _G["DefaultWordReplacementTextArea"]
+
         DefaultWordReplacementTextArea:SetText(
-            defaultWordReplacementString or "")
-        ShowUIPanel(DefaultWordReplacementUI)
+            OPFData["defaultWordReplacement"] or "")
+        ShowUIPanel(ui)
     end
 
-    local function createWordReplacementLine(parent, index, nonEditableText,
-                                             editableText)
-        local line = CreateFrame("Frame",
-                                 "WordReplacementOverridesLine" .. index, parent)
-        line:SetSize(340, 30)
-        line:SetPoint("TOPLEFT", parent, 10, -10 - (index - 1) * 35)
+    local function ShowWordReplacementOverridesUI()
+        local ui = _G["WordReplacementOverridesUI"]
 
-        local nonEditable = line:CreateFontString(
-                                "WordReplacementOverridesLine" .. index ..
-                                    "NonEditable", "ARTWORK", "GameFontNormal")
-        nonEditable:SetSize(160, 30)
-        nonEditable:SetPoint("LEFT")
-        nonEditable:SetText(nonEditableText)
-
-        local editable = CreateFrame("EditBox",
-                                     "WordReplacementOverridesLine" .. index ..
-                                         "Editable", line, "InputBoxTemplate")
-        editable:SetSize(160, 30)
-        editable:SetPoint("LEFT", nonEditable, "RIGHT", 10, 0)
-        editable:SetText(editableText)
-
-        return line
-    end
-
-    local function isTableEmpty(t)
-        for _ in pairs(t) do return false end
-        return true
-    end
-
-    function ShowWordReplacementOverridesUI()
-        local wss = _G["WordReplacementOverridesContent"]
-
-        -- local isEmpty = isTableEmpty(wordReplacementOverrides)
-        -- if (isEmpty == false) then
-        -- local numberedIndex = 1
-
-        print(#wordsToReplaceTable)
-
-        for index, match in ipairs(wordsToReplaceTable) do
-
-            if (wordReplacementOverrides[match] == nil) then
-                wordReplacementOverrides[match] = ""
-            end
-
-            createWordReplacementLine(wss, index, match,
-                                      wordReplacementOverrides[match])
-        end
-        -- for index, value in pairs(wordReplacementOverrides) do
-        --     createWordReplacementLine(wss, numberedIndex, index, value)
-        --     numberedIndex = numberedIndex + 1
-        -- end
-        -- else
-
-        -- end
-
-        ShowUIPanel(WordReplacementOverridesUI)
-
+        OPF.WRO.CreatePaginationButtons()
+        OPF.WRO.GetOverrideRowsStartingWithCharacter('a')
+        ShowUIPanel(ui)
     end
 
     -- Register the /opf command
     SLASH_OPF1 = "/opf"
     SlashCmdList["OPF"] = ShowOPFConfigFrame
 
-    -- local function SaveData()
-    --     OPFData["wordReplacementOverrides"] = {"example1", "example2", "example3"}
-    --     print("Data saved to OPFData['wordReplacementOverrides']")
-    -- end
-
-    -- -- Call SaveData and LoadData for testing
-    -- SaveData()
+    -- add necessary functions to OPF global
+    OPF.ShowDefaultWordReplacementUI = ShowDefaultWordReplacementUI
+    OPF.ShowWordsToReplaceUI = ShowWordsToReplaceUI
+    OPF.ShowWordReplacementOverridesUI = ShowWordReplacementOverridesUI
 
 end
 

@@ -8,7 +8,7 @@
                 <FontString name="DefaultWordReplacementTitle" inherits="GameFontHighlightLarge" text="Outgoing Profanity Filter">
                     <Anchors>
                         <Anchor point="TOP" relativePoint="TOP" x="0" y="-3"/>
-                    </Anchors>                    
+                    </Anchors>
                 </FontString>
             </Layer>
             <Layer level="OVERLAY">
@@ -29,33 +29,30 @@
                 </Anchors>
                 <Scripts>
                     <OnClick>
-                            GameTooltip:SetOwner(self, "ANCHOR_NONE")
-                            GameTooltip:SetPoint("TOP", DefaultWordReplacementInfoIconButton, "BOTTOM", 0, -10)
-                            GameTooltip:SetText("A word or character should be provided in the input box below, that will be used when sending messages to replace any of the words included in the Words To Replace config.\n\nExample:\n* Default Replacement: $$\n* Words to Replace List: cow,chicken,muffin,donkey\n* Original Message: 'The silly COW chiCken had its DOnkey in a MUFFIN'\n* Sent Message: 'The silly $$ $$ had its $$ in a $$'",1,1,1,1,true)
-                            GameTooltip:Show()
-                        </OnClick>
+                        GameTooltip:SetOwner(self, "ANCHOR_NONE")
+                        GameTooltip:SetPoint("TOP", DefaultWordReplacementInfoIconButton, "BOTTOM", 0, -10)
+                        GameTooltip:SetText("A word or character should be provided in the input box below, that will be used when sending messages to replace any of the words included in the Words To Replace config.\n\nExample:\n* Default Replacement: $$\n* Words to Replace List: cow,chicken,muffin,donkey\n* Original Message: 'The silly COW chiCken had its DOnkey in a MUFFIN'\n* Sent Message: 'The silly $$ $$ had its $$ in a $$'",1,1,1,1,true)
+                        GameTooltip:Show()
+                    </OnClick>
                     <OnLeave>
-                            GameTooltip:Hide()
-                        </OnLeave>
+                        GameTooltip:Hide()
+                    </OnLeave>
                 </Scripts>
             </Button>
-            
-    
-        <EditBox name="DefaultWordReplacementTextArea" inherits="InputBoxTemplate" autoFocus="false">
-            <Size>
-                <AbsDimension x="200" y="200"/>
-            </Size>
-            <Anchors>
-                <Anchor point="CENTER" relativeTo="$parent" relativePoint="CENTER" x="0" y="0"/>
-            </Anchors>
-            <FontString inherits="ChatFontNormal"/>
-            <Scripts>
-                <OnEscapePressed>
-                    self:ClearFocus()
-                </OnEscapePressed>
-            </Scripts>
-        </EditBox>
-    
+            <EditBox name="DefaultWordReplacementTextArea" inherits="InputBoxTemplate" autoFocus="false">
+                <Size>
+                    <AbsDimension x="200" y="200"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="CENTER" relativeTo="$parent" relativePoint="CENTER" x="0" y="0"/>
+                </Anchors>
+                <FontString inherits="ChatFontNormal"/>
+                <Scripts>
+                    <OnEscapePressed>
+                        self:ClearFocus()
+                    </OnEscapePressed>
+                </Scripts>
+            </EditBox>
             <Button name="DefaultWordReplacementSaveAndReloadButton" inherits="UIPanelButtonTemplate" text="Save and Reload">
                 <Size>
                     <AbsDimension x="140" y="22"/>
@@ -65,11 +62,10 @@
                 </Anchors>
                 <Scripts>
                     <OnClick>
-                        DefaultWordReplacementSaveAndReload()
+                        OPF.DWR.SaveAndReload()
                     </OnClick>
                 </Scripts>
             </Button>
-        
-        </Frames>        
+        </Frames>
     </Frame>
 </Ui>

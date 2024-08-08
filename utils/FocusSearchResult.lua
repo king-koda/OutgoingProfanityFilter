@@ -1,5 +1,5 @@
 -- Function to focus the next or previous search result
-function OutgoingProfanityFilterFocusSearchResult(direction)
+local function FocusSearchResult(direction)
     local textArea = _G["WordsToReplaceTextArea"]
     local scrollFrame = _G["WordsToReplaceScrollFrame"]
 
@@ -49,3 +49,5 @@ function OutgoingProfanityFilterFocusSearchResult(direction)
 
     scrollFrame.ScrollBar:SetValue(newScroll)
 end
+
+OPF.WTR.FocusSearchResult = FocusSearchResult

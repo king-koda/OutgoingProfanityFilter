@@ -8,13 +8,20 @@
                 <FontString name="WordReplacementOverridesUITitle" inherits="GameFontHighlightLarge" text="Outgoing Profanity Filter">
                     <Anchors>
                         <Anchor point="TOP" relativePoint="TOP" x="0" y="-3"/>
-                    </Anchors>                    
+                    </Anchors>
                 </FontString>
             </Layer>
             <Layer level="OVERLAY">
                 <FontString name="WordReplacementOverridesUISubtitle" inherits="GameFontNormal" text="Configure Word Replacement Overrides">
                     <Anchors>
                         <Anchor point="TOP" relativePoint="TOP" x="0" y="-35"/>
+                    </Anchors>
+                </FontString>
+            </Layer>
+            <Layer level="OVERLAY">
+                <FontString name="WordReplacementOverridesUICurrentCharacterText" inherits="GameFontHighlightSmall">
+                    <Anchors>
+                        <Anchor point="TOP" relativePoint="TOP" x="0" y="-55"/>
                     </Anchors>
                 </FontString>
             </Layer>
@@ -44,7 +51,7 @@
                     <AbsDimension x="360" y="160"/>
                 </Size>
                 <Anchors>
-                    <Anchor point="TOPLEFT" relativePoint="TOPLEFT" x="0" y="-80"/>
+                    <Anchor point="TOPLEFT" relativePoint="TOPLEFT" x="0" y="-70"/>
                 </Anchors>
                 <ScrollChild>
                     <Frame name="WordReplacementOverridesContent">
@@ -57,23 +64,7 @@
                     </Frame>
                 </ScrollChild>
             </ScrollFrame>
-    
-        <!-- <EditBox name="WordReplacementOverridesUITextArea" inherits="InputBoxTemplate" autoFocus="false">
-            <Size>
-                <AbsDimension x="200" y="200"/>
-            </Size>
-            <Anchors>
-                <Anchor point="CENTER" relativeTo="$parent" relativePoint="CENTER" x="0" y="0"/>
-            </Anchors>
-            <FontString inherits="ChatFontNormal"/>
-            <Scripts>
-                <OnEscapePressed>
-                    self:ClearFocus()
-                </OnEscapePressed>
-            </Scripts>
-        </EditBox> -->
-    
-            <Button name="WordReplacementOverridesUISaveAndReloadButton" inherits="UIPanelButtonTemplate" text="Save and Reload">
+            <Button name="WordReplacementOverridesSaveAndReloadButton" inherits="UIPanelButtonTemplate" text="Save and Reload">
                 <Size>
                     <AbsDimension x="140" y="22"/>
                 </Size>
@@ -82,11 +73,10 @@
                 </Anchors>
                 <Scripts>
                     <OnClick>
-                        WordReplacementOverridesSaveAndReload()
+                        OPF.WRO.SaveAndReload()
                     </OnClick>
                 </Scripts>
             </Button>
-        
-        </Frames>        
+        </Frames>
     </Frame>
 </Ui>

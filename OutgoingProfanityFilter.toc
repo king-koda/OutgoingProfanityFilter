@@ -5,10 +5,18 @@
 ## Version: 1.0.0
 ## SavedVariables: OPFData
 
+utils/InitialiseOPFGlobal.lua
+
+utils/ResetSavedVariables.lua
+utils/EscapeText.lua
+utils/GenerateOverrideRow.lua
+utils/GetOverrideRowsStartingWithCharacter.lua
 utils/FocusSearchResult.lua
 utils/SaveAndReload.lua
 utils/HighlightText.lua
 utils/UpdateTextArea.lua
+utils/CreatePaginationButtons.lua
+utils/HideFrameChildren.lua
 OutgoingProfanityFilter.lua
 ui/DefaultWordReplacementUI.xml
 ui/WordReplacementOverridesUI.xml

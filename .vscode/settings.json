@@ -12,7 +12,9 @@
     "ReloadUI",
     "UIPanelWindows",
     "UISpecialFrames",
-    "CreateFrame"
+    "CreateFrame",
+    "xx",
+    "StaticPopupDialogs"
   ],
   "Lua.runtime.version": "Lua 5.1",
   "Lua.runtime.builtin": {
