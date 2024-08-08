@@ -65,6 +65,10 @@ local function WordReplacementOverridesSaveAndReload()
             _G["WordReplacementOverridesLine" .. i .. "NonEditable"]:GetText()
         local override =
             _G["WordReplacementOverridesLine" .. i .. "Editable"]:GetText()
+
+        -- set empty string overrides back to nil
+        if (override == "") then override = OPF.NIL end
+
         OPFData.wordsToReplaceWithOverridesTable[word] = override
     end
 

@@ -7,6 +7,8 @@
 
 utils/InitialiseOPFGlobal.lua
 
+utils/ReplaceWords.lua
+utils/ReplaceWordsWithOverrides.lua
 utils/ResetSavedVariables.lua
 utils/EscapeText.lua
 utils/GenerateOverrideRow.lua

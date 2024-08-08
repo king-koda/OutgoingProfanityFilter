@@ -13,7 +13,6 @@ local function UpdateTextArea()
 
     -- if there is something typed in the search box, highlight the text
     if searchResults ~= "" then
-        print('wtf why')
         local updatedTextWithHighlights = OPF.WTR.HighlightText(searchResults)
         if (updatedTextWithHighlights ~= nil) then
             textArea:SetText(updatedTextWithHighlights)
@@ -21,8 +20,6 @@ local function UpdateTextArea()
 
         searchLabel:Hide()
     else
-        print('searchResults', searchResults)
-        print('OPF.searchResults', #OPF.searchResults)
         searchLabel:Show()
     end
 end

@@ -33,8 +33,8 @@ local function InitializeAddon()
     local OPFConfigFrame = _G["OPFConfigFrame"]
 
     -- preserve reference to original function
-    local _ShowUIPanel = ShowUIPanel;
-
+    -- local _ShowUIPanel = ShowUIPanel;
+    -- TODO: come back to this later, as it's not working causing blizz ui red flags
     -- function ShowUIPanel(frame, ...)
     --     local frameName = frame:GetName()
     --     -- override the OnHide script for WordsToReplaceUI to show the OPFConfigFrame, 
@@ -53,57 +53,26 @@ local function InitializeAddon()
     -- preserve reference to original function
     local _SendChatMessage = SendChatMessage;
 
-    local function replaceWordsWithOverrides(modifiedMessage)
-        for word, override in pairs(OPFData["wordsToReplaceWithOverridesTable"]) do
-            if (override ~= OPF.NIL) then
-                local escapedWord = OPF.EscapeText(word)
-
-                -- replace word with a unique override
-                modifiedMessage = modifiedMessage:gsub(escapedWord, override)
-            end
-        end
-
-        return modifiedMessage
-    end
-
-    local function replaceWords(modifiedMessage)
-        -- TODO: if not as performant, could consider breaking the message apart and seeing if those words exist in the OPFData["wordsToReplaceString"] 
-        -- and only replacing if they do, rather than iterating through the entire OPFData["wordsToReplaceWithOverridesTable"]
-        for word, override in pairs(OPFData["wordsToReplaceWithOverridesTable"]) do
-            local escapedWord = OPF.EscapeText(word)
-
-            -- do a quick check to see if the word is in the message before doing a replace
-            local result = string.find(modifiedMessage, escapedWord)
-            if (result ~= nil) then
-                print('escapedWord', escapedWord)
-
-                -- replace word with a universal override
-                modifiedMessage = modifiedMessage:gsub(escapedWord,
-                                                       OPFData["defaultWordReplacement"])
-            end
-        end
-        return modifiedMessage
-    end
-
     -- override the original function
     function SendChatMessage(message, ...)
         -- set message to lowercase for easier comparison, and disallow bypassing via capitalization
         local modifiedMessage = string.lower(message)
 
         -- apply the overrides first before the catch all
-        modifiedMessage = replaceWordsWithOverrides(modifiedMessage)
+        modifiedMessage = OPF.ReplaceWordsWithOverrides(modifiedMessage)
+
         -- apply defaultReplacementString to all wordsToReplace
-        modifiedMessage = replaceWords(modifiedMessage)
+        modifiedMessage = OPF.ReplaceWords(modifiedMessage)
 
         -- call original function with the newly modified message
         _SendChatMessage(modifiedMessage, ...);
     end
 
     -- Function to show the main frame
-    function ShowOPFConfigFrame() ShowUIPanel(OPFConfigFrame) end
+    local function ShowConfigFrame() ShowUIPanel(OPFConfigFrame) end
 
     -- Functions to show the individual frames
-    function ShowWordsToReplaceUI()
+    local function ShowWordsToReplaceUI()
         local ui = _G["WordsToReplaceUI"]
         local textArea = _G["WordsToReplaceTextArea"]
 
@@ -138,7 +107,7 @@ local function InitializeAddon()
 
     -- Register the /opf command
     SLASH_OPF1 = "/opf"
-    SlashCmdList["OPF"] = ShowOPFConfigFrame
+    SlashCmdList["OPF"] = ShowConfigFrame
 
     -- add necessary functions to OPF global
     OPF.ShowDefaultWordReplacementUI = ShowDefaultWordReplacementUI

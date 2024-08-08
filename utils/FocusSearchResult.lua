@@ -4,7 +4,7 @@ local function FocusSearchResult(direction)
     local scrollFrame = _G["WordsToReplaceScrollFrame"]
 
     if #OPF.searchResults == 0 then
-        print("No search results found")
+        print("No search results found.")
         return
     end
 
@@ -28,7 +28,7 @@ local function FocusSearchResult(direction)
 
     -- Validate the result positions
     if pos.s < 1 or pos.e > #currentText or pos.s > pos.e then
-        print("Invalid search result positions")
+        print("Invalid search result positions.")
         return
     end
 
