@@ -9,6 +9,7 @@ OPF.WRO.currentCharacter = "a"
 OPF.WRO.currentCharacterFrames = {}
 OPF.WRO.currentCharacterFrames[OPF.WRO.currentCharacter] = nil
 OPF.WRO.paginationIndexes = {}
+OPF.WRO.frameNumberIndex = 1;
 
 OPF.WTR = {}
 

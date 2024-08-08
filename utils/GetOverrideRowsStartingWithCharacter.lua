@@ -15,7 +15,6 @@ local function GetOverrideRowsStartingWithCharacter(character)
     OPF.HideFrameChildren(parentFrame)
 
     local seen = {}
-    local numberedIndex = 1;
 
     for word, override in pairs(OPFData["wordsToReplaceWithOverridesTable"]) do
         -- if seen already, return early
@@ -35,14 +34,15 @@ local function GetOverrideRowsStartingWithCharacter(character)
 
             -- if the word doesn't belong to another character, generate it for the ++ character
             if (hasCharacter == false) then
-                OPF.WRO.GenerateOverrideRow(parentFrame, numberedIndex, word,
+                OPF.WRO.GenerateOverrideRow(parentFrame,
+                                            OPF.WRO.frameNumberIndex, word,
                                             override, character)
-                numberedIndex = numberedIndex + 1
+                OPF.WRO.frameNumberIndex = OPF.WRO.frameNumberIndex + 1
             end
         elseif string.sub(word, 1, 1) == character then
-            OPF.WRO.GenerateOverrideRow(parentFrame, numberedIndex, word,
-                                        override, character)
-            numberedIndex = numberedIndex + 1
+            OPF.WRO.GenerateOverrideRow(parentFrame, OPF.WRO.frameNumberIndex,
+                                        word, override, character)
+            OPF.WRO.frameNumberIndex = OPF.WRO.frameNumberIndex + 1
         end
 
         seen[word] = true

@@ -1,3 +1,12 @@
+local function PruneExistingTable(text)
+    for word, override in pairs(OPFData["wordsToReplaceWithOverridesTable"]) do
+        if not (string.find(text, "%f[%a]" .. word .. "%f[%A]")) then
+            OPFData["wordsToReplaceWithOverridesTable"][word] = nil
+        end
+
+    end
+end
+
 -- function for saving and reloading the addon after inserting new words to replace
 local function WordsToReplaceSaveAndReload()
     local textArea = _G["WordsToReplaceTextArea"]
@@ -10,6 +19,7 @@ local function WordsToReplaceSaveAndReload()
     -- Remove spaces
     text = string.gsub(text, "%s", "")
 
+    -- TODO: should this be added back.... more testing required
     -- text = OPF.EscapeText(text)
 
     if (text == "") then
@@ -18,8 +28,12 @@ local function WordsToReplaceSaveAndReload()
         ReloadUI()
     end
 
+    -- removes words that are no longer in the text area
+    PruneExistingTable(text)
+
     local wordsToReplaceTable = {}
-    for word in string.gmatch(text, "([^,]+)") do
+    local newWords = string.gmatch(text, "([^,]+)")
+    for word in newWords do
         -- if seen already, skip
         if not (seen[word]) then
             table.insert(wordsToReplaceTable, word)
@@ -60,9 +74,11 @@ local function WordReplacementOverridesSaveAndReload()
         wordReplacementOverridesContent:GetNumChildren();
 
     for i = 1, wordReplacementOverridesLines do
-
+        print('i', i)
         local word =
             _G["WordReplacementOverridesLine" .. i .. "NonEditable"]:GetText()
+        print('word', word)
+
         local override =
             _G["WordReplacementOverridesLine" .. i .. "Editable"]:GetText()
 

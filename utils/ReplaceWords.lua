@@ -3,7 +3,7 @@ local function ReplaceWords(modifiedMessage)
     -- and only replacing if they do, rather than iterating through the entire OPFData["wordsToReplaceWithOverridesTable"]
     for word, override in pairs(OPFData["wordsToReplaceWithOverridesTable"]) do
         local escapedWord = OPF.EscapeText(word)
-
+        print('escapedWord', escapedWord)
         -- do a quick check to see if the word is in the message before doing a replace
         local result = string.find(modifiedMessage, escapedWord)
         if (result ~= nil) then
