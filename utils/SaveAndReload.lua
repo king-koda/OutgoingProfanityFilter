@@ -26,7 +26,7 @@ local function WordsToReplaceSaveAndReload()
     if (text == "") then
         OPFData["wordsToReplaceWithOverridesTable"] = {}
         OPFData["wordsToReplaceString"] = ""
-        ReloadUI()
+        -- ReloadUI()
     end
 
     -- removes words that are no longer in the text area
@@ -50,7 +50,7 @@ local function WordsToReplaceSaveAndReload()
 
     OPFData["wordsToReplaceString"] = table.concat(wordsToReplaceTable, ",")
 
-    ReloadUI()
+    -- ReloadUI()
 end
 
 -- function for saving and reloading the addon after inserting the default word replacement
@@ -64,7 +64,7 @@ local function DefaultWordReplacementSaveAndReload()
 
     OPFData["defaultWordReplacement"] = text
 
-    ReloadUI()
+    -- ReloadUI()
 end
 
 -- function for saving and reloading the addon after inserting the word replacement overrides
@@ -87,7 +87,7 @@ local function WordReplacementOverridesSaveAndReload()
         OPFData.wordsToReplaceWithOverridesTable[word] = override
     end
 
-    ReloadUI()
+    -- ReloadUI()
 end
 
 OPF.WTR.SaveAndReload = WordsToReplaceSaveAndReload

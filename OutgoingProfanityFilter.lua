@@ -18,7 +18,7 @@ local function InitializeAddon()
         button2 = "NO",
         OnAccept = function()
             OPFData = OPF.ResetSavedVariables()
-            ReloadUI()
+            -- ReloadUI()
         end,
         timeout = 0,
         whileDead = true,

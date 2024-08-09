@@ -9,7 +9,7 @@
                 <FontString name="OPFConfigFrameTitle" inherits="GameFontHighlightLarge" text="Outgoing Profanity Filter">
                     <Anchors>
                         <Anchor point="TOP" relativePoint="TOP" x="0" y="-3"/>
-                    </Anchors>                
+                    </Anchors>
                 </FontString>
             </Layer>
         </Layers>
@@ -83,6 +83,23 @@
                     </OnLeave>
                 </Scripts>
             </Button>
+            <CheckButton name="OPFToggleExactMatchCheckBox" text="Enable Feature">
+                <Size>
+                    <AbsDimension x="40" y="40"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="RIGHT" relativePoint="RIGHT" x="-45" y="-60"/>
+                </Anchors>
+                 <NormalTexture file="Interface\Buttons\UI-CheckBox-Up"/>
+        <PushedTexture file="Interface\Buttons\UI-CheckBox-Down"/>
+        <HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD"/>
+        <CheckedTexture file="Interface\Buttons\UI-CheckBox-Check"/>
+                <Scripts>
+                    <OnClick>
+                        OPF.ToggleExactMatching()
+                    </OnClick>
+                </Scripts>
+            </CheckButton>
             <Button name="ResetAllToDefaults" inherits="UIPanelButtonTemplate" text="Reset all to Defaults">
                 <Size>
                     <AbsDimension x="200" y="30"/>
@@ -91,11 +108,20 @@
                     <Anchor point="CENTER" relativePoint="CENTER" x="0" y="-100"/>
                 </Anchors>
                 <Scripts>
-                   <OnClick>
+                    <OnClick>
             StaticPopup_Show("CONFIRM_OPF_RESET")
                 </OnClick>
                 </Scripts>
             </Button>
         </Frames>
+         <Layers>
+            <Layer level="OVERLAY">
+                <FontString name="OPFToggleExactMatchCheckBoxLabel" inherits="GameFontHighlight" text="Toggle Exact Word Matching">
+                    <Anchors>
+                        <Anchor point="LEFT" relativeTo="OPFToggleExactMatchCheckBox" relativePoint="LEFT" x="-200" y="0"/>
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
     </Frame>
 </Ui>

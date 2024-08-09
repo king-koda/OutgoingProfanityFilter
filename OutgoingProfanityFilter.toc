@@ -7,6 +7,7 @@
 
 utils/InitialiseOPFGlobal.lua
 
+utils/ToggleShouldReplaceByExactWordMatch.lua
 utils/ReplaceWords.lua
 utils/ResetSavedVariables.lua
 utils/EscapeText.lua
@@ -18,7 +19,9 @@ utils/HighlightText.lua
 utils/UpdateTextArea.lua
 utils/CreatePaginationButtons.lua
 utils/HideFrameChildren.lua
+
 OutgoingProfanityFilter.lua
+
 ui/DefaultWordReplacementUI.xml
 ui/WordReplacementOverridesUI.xml
 ui/WordsToReplaceUI.xml
