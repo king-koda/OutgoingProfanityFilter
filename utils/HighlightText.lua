@@ -5,10 +5,14 @@ local function HighlightText(searchResults)
     -- exit early if there is no words to replace configured
     if (wordsToReplaceString == "") then return nil end
 
+    -- TODO: escape search results ?? possibly not, can allow people to use regex ?
+
     -- TODO: improve below
     local searchPattern = string.gsub(string.lower(searchResults),
                                       "[%^%$%(%)%%%.%[%]%*%+%-%?]", "%%%1")
     local start = 1
+
+    -- TODO: escape wordsToReplaceString ??
 
     -- TODO: fix this bad code
     while true do

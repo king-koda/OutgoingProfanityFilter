@@ -2,7 +2,8 @@ local function ResetSavedVariables()
     return {
         wordsToReplaceString = "",
         wordsToReplaceWithOverridesTable = {},
-        defaultWordReplacement = "*"
+        defaultWordReplacement = "*",
+        shouldReplaceByExactWordMatch = false
     }
 end
 

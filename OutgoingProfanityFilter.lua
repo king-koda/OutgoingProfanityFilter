@@ -58,14 +58,15 @@ local function InitializeAddon()
         -- set message to lowercase for easier comparison, and disallow bypassing via capitalization
         local modifiedMessage = string.lower(message)
 
-        -- apply the overrides first before the catch all
-        modifiedMessage = OPF.ReplaceWordsWithOverrides(modifiedMessage)
-
-        -- apply defaultReplacementString to all wordsToReplace
-        modifiedMessage = OPF.ReplaceWords(modifiedMessage)
-
-        -- call original function with the newly modified message
-        _SendChatMessage(modifiedMessage, ...);
+        if (pcall(function()
+            modifiedMessage = OPF.ReplaceWords(modifiedMessage)
+        end)) then
+            _SendChatMessage(modifiedMessage, ...)
+        else
+            print(
+                'ERROR: Outgoing Profanity Filter had an issue replacing the words in the previous sentence, please report this to the addon author on GitHub with your list of words or the culprit word, and the sentence it failed on.')
+            _SendChatMessage(message, ...)
+        end
     end
 
     -- Function to show the main frame
@@ -113,7 +114,6 @@ local function InitializeAddon()
     OPF.ShowDefaultWordReplacementUI = ShowDefaultWordReplacementUI
     OPF.ShowWordsToReplaceUI = ShowWordsToReplaceUI
     OPF.ShowWordReplacementOverridesUI = ShowWordReplacementOverridesUI
-
 end
 
 -- Create a frame to handle events

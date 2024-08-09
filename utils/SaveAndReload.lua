@@ -1,6 +1,7 @@
 local function PruneExistingTable(text)
     for word, override in pairs(OPFData["wordsToReplaceWithOverridesTable"]) do
-        if not (string.find(text, "%f[%a]" .. word .. "%f[%A]")) then
+        local escapedWord = OPF.EscapeText(word)
+        if not (string.find(text, "%f[%a]" .. escapedWord .. "%f[%A]")) then
             OPFData["wordsToReplaceWithOverridesTable"][word] = nil
         end
 
@@ -74,10 +75,8 @@ local function WordReplacementOverridesSaveAndReload()
         wordReplacementOverridesContent:GetNumChildren();
 
     for i = 1, wordReplacementOverridesLines do
-        print('i', i)
         local word =
             _G["WordReplacementOverridesLine" .. i .. "NonEditable"]:GetText()
-        print('word', word)
 
         local override =
             _G["WordReplacementOverridesLine" .. i .. "Editable"]:GetText()
