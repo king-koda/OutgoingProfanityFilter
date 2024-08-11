@@ -1,3 +1,5 @@
+# Outgoing Profanity Filter
+
 A world of warcraft addon that can be used to filter out/ replace words in the users outgoing messages, to: bypass automated abuse bans, pretend to be friendly when insulting (word replacement), prevent manual abuse report scenarios, or to self mute entirely.
 
 Instructions:
@@ -7,6 +9,7 @@ Instructions:
 4. (Optionally) Configure replacement overrides for particular words
 5. Toggle whether you prefer partial or exact word matching algorithm to be in use (default/partial is the safest option but more intrusive)
 6. Toggle self mute if preferred
+7. For a list of example profanity to use with the addon, copy and paste the list at https://github.com/koda313/profanity-list/blob/main/words.txt
 
 Commands:
 /opf -> addon configuration
