@@ -3,7 +3,8 @@ local function ResetSavedVariables()
         wordsToReplaceString = "",
         wordsToReplaceWithOverridesTable = {},
         defaultWordReplacement = "*",
-        shouldReplaceByExactWordMatch = false
+        shouldReplaceByExactWordMatch = false,
+        shouldSelfMute = false
     }
 end
 

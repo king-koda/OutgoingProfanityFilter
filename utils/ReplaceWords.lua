@@ -18,6 +18,10 @@ end
 local function ReplaceWords(modifiedMessage)
     local words = GetWordsFromMessage(modifiedMessage)
 
+    if (OPFData["shouldSelfMute"]) then
+        return ""
+    end
+    
     for word in words do
         local escapedWord = OPF.EscapeText(word)
 
@@ -49,3 +53,4 @@ local function ReplaceWords(modifiedMessage)
 end
 
 OPF.ReplaceWords = ReplaceWords
+OPF.GetWordsFromMessage = GetWordsFromMessage

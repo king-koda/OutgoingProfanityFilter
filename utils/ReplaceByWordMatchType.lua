@@ -1,17 +1,18 @@
 local function ToggleMatchingType()
-    local partialMatchCheckBox = _G["OPFToggleExactMatchCheckBox"]
-    local exactMatchCheckBox = _G["OPFTogglePartialMatchCheckBox"]
+    -- save the new state
     OPFData["shouldReplaceByExactWordMatch"] =
         not OPFData["shouldReplaceByExactWordMatch"]
 
-    OPF.SetCheckButtonStates()
+    -- set the new button states
+    OPF.SetReplaceByMatchCheckButtonStates()
 end
 
-local function SetCheckButtonStates()
+local function SetReplaceByMatchCheckButtonStates()
     local partialMatchCheckBox = _G["OPFToggleExactMatchCheckBox"]
     local exactMatchCheckBox = _G["OPFTogglePartialMatchCheckBox"]
     local state = OPF.GetShouldReplaceByExactMatchButtonState()
-    print('state', state)
+
+    -- if partial matching is enabled, disable exact matching and vice versa
     if (state == false) then
         partialMatchCheckBox:SetChecked(true)
         exactMatchCheckBox:SetChecked(false)
@@ -34,4 +35,4 @@ end
 OPF.ToggleMatchingType = ToggleMatchingType
 OPF.GetShouldReplaceByExactMatchButtonState =
     GetShouldReplaceByExactMatchButtonState
-OPF.SetCheckButtonStates = SetCheckButtonStates
+OPF.SetReplaceByMatchCheckButtonStates = SetReplaceByMatchCheckButtonStates

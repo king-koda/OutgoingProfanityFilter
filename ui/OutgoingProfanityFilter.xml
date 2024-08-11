@@ -1,191 +1,254 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
-    <Script file="OutgoingProfanityFilter.lua"/>
-    <Frame name="OPFConfigFrame"  frameStrata="HIGH"  hidden="true" enableMouse="true" clampedToScreen="true" topLevel="true" inherits="BackdropTemplate, BasicFrameTemplateWithInset">
-        <Size>
-            <AbsDimension x="400" y="300"/>
-        </Size>
-        <Layers>
-            <Layer level="OVERLAY">
-                <FontString name="OPFConfigFrameTitle" inherits="GameFontHighlightLarge" text="Outgoing Profanity Filter">
-                    <Anchors>
-                        <Anchor point="TOP" relativePoint="TOP" x="0" y="-3"/>
-                    </Anchors>
-                </FontString>
-            </Layer>
-            <Layer level="OVERLAY">
-                <FontString name="OPFConfigUISubtitleConfigure" inherits="GameFontNormal" text="Configure">
-                    <Anchors>
-                        <Anchor point="TOPLEFT" relativeTo="OPFConfigFrame" relativePoint="TOPLEFT" x="80" y="-40"/>
-                    </Anchors>
-                </FontString>
-            </Layer>
-            <Layer level="OVERLAY">
-                <FontString name="OPFConfigUISubtitleToggle" inherits="GameFontNormal" text="Toggle">
-                    <Anchors>
-                        <Anchor point="TOPRIGHT" relativeTo="OPFConfigFrame" relativePoint="TOPRIGHT" x="-80" y="-40"/>
-                    </Anchors>
-                </FontString>
-            </Layer>
-        </Layers>
-        <Frames>
-            <Frame name="OPFConfigTopLeftCorner">
+	<Script file="OutgoingProfanityFilter.lua" />
+	<Frame name="OPFConfigFrame" frameStrata="HIGH" hidden="true" enableMouse="true" clampedToScreen="true" topLevel="true" inherits="BackdropTemplate, BasicFrameTemplateWithInset">
+		<Size>
+			<AbsDimension x="400" y="300" />
+		</Size>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="OPFConfigFrameTitle" inherits="GameFontGreen" text="Outgoing Profanity Filter">
+					<Anchors>
+						<Anchor point="TOP" relativePoint="TOP" x="0" y="-5" />
+					</Anchors>
+                   
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame name="OPFConfigLeftColumn">
+				<Size>
+					<AbsDimension x="200" y="300" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="OPFConfigFrame" relativePoint="TOPLEFT" x="0" y="0" />
+				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString name="OPFConfigUISubtitleConfigure" inherits="GameFontNormalLarge" text="Configure">
+							<Anchors>
+								<Anchor point="TOP" relativeTo="$parent" relativePoint="TOP" x="0" y="-40" />
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Frames>
+					<Button name="ShowWordsToReplaceUIButton" inherits="GameMenuButtonTemplate" text="Words">
+						<Size>
+							<AbsDimension x="160" y="35" />
+						</Size>
+						<Anchors>
+							<Anchor point="TOP" relativeTo="OPFConfigLeftColumn" relativePoint="TOP" x="0" y="-80" />
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								OPF.ShowWordsToReplaceUI()
+							</OnClick>
+							<OnEnter>
+								local x, y = GetCursorPosition()
+								GameTooltip:SetOwner(self, "ANCHOR_NONE")
+								GameTooltip:SetPoint("TOP", ShowWordsToReplaceUIButton, "TOP", 0, 35)
+								GameTooltip:SetText("Configure the list of words that will be replaced.")
+								GameTooltip:Show()
+							</OnEnter>
+							<OnLeave>
+								GameTooltip:Hide()
+							</OnLeave>
+						</Scripts>
+					</Button>
+					<Button name="ShowDefaultWordReplacementUIButton" inherits="GameMenuButtonTemplate" text="Default Replacement">
+						<Size>
+							<AbsDimension x="160" y="35" />
+						</Size>
+						<Anchors>
+							<Anchor point="TOP" relativeTo="OPFConfigLeftColumn" relativePoint="TOP" x="0" y="-130" />
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								OPF.ShowDefaultWordReplacementUI()
+							</OnClick>
+							<OnEnter>
+								local x, y = GetCursorPosition()
+								GameTooltip:SetOwner(self, "ANCHOR_NONE")
+								GameTooltip:SetPoint("TOP", ShowDefaultWordReplacementUIButton, "TOP", 0, 35)
+								GameTooltip:SetText("Configure the default replacement for all words in the list.")
+								GameTooltip:Show()
+							</OnEnter>
+							<OnLeave>
+								GameTooltip:Hide()
+							</OnLeave>
+						</Scripts>
+					</Button>
+					<Button name="ShowWordReplacementOverridesUIButton" inherits="GameMenuButtonTemplate" text="Replacement Overrides">
+						<Size>
+							<AbsDimension x="160" y="35" />
+						</Size>
+						<Anchors>
+							<Anchor point="TOP" relativeTo="OPFConfigLeftColumn" relativePoint="TOP" x="0" y="-180" />
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								OPF.ShowWordReplacementOverridesUI()
+							</OnClick>
+							<OnEnter>
+								local x, y = GetCursorPosition()
+								GameTooltip:SetOwner(self, "ANCHOR_NONE")
+								GameTooltip:SetPoint("TOP", ShowWordReplacementOverridesUIButton, "TOP", 0, 35)
+								GameTooltip:SetText("Configure override replacements for specific words instead of the default.")
+								GameTooltip:Show()
+							</OnEnter>
+							<OnLeave>
+								GameTooltip:Hide()
+							</OnLeave>
+						</Scripts>
+					</Button>
+                   
+				</Frames>
+			</Frame>
+			<Frame name="OPFConfigRightColumn">
+				<Size>
+					<AbsDimension x="200" y="300" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativeTo="OPFConfigFrame" relativePoint="TOPRIGHT" x="0" y="0" />
+				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString name="OPFConfigUISubtitleToggle" inherits="GameFontNormalLarge" text="Toggle">
+							<Anchors>
+								<Anchor point="TOP" relativeTo="$parent" relativePoint="TOP" x="0" y="-40" />
+							</Anchors>
+						</FontString>
+					</Layer>
+					<Layer level="OVERLAY">
+						<FontString name="OPFTogglePartialMatchCheckBoxLabel" inherits="GameFontHighlight" justifyH="LEFT" text="Partial Matching">
+							<Size>
+								<AbsDimension x="120" y="35" />
+							</Size>
+							<Anchors>
+								<Anchor point="TOP" relativeTo="OPFConfigRightColumn" relativePoint="TOP" x="-5" y="-80" />
+							</Anchors>
+						</FontString>
+					</Layer>
+					<Layer level="OVERLAY">
+						<FontString name="OPFToggleExactMatchCheckBoxLabel" inherits="GameFontHighlight" justifyH="LEFT" text="Exact Matching">
+							<Size>
+								<AbsDimension x="120" y="35" />
+							</Size>
+							<Anchors>
+								<Anchor point="TOP" relativeTo="OPFConfigRightColumn" relativePoint="TOP" x="-5" y="-130" />
+							</Anchors>
+						</FontString>
+					</Layer>
+                    <Layer level="OVERLAY">
+						<FontString name="OPFToggleSelfMuteCheckBoxLabel" inherits="GameFontHighlight" justifyH="LEFT" text="Self Mute">
+							<Size>
+								<AbsDimension x="120" y="35" />
+							</Size>
+							<Anchors>
+								<Anchor point="TOP" relativeTo="OPFConfigRightColumn" relativePoint="TOP" x="-5" y="-180" />
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Frames>
+					<CheckButton name="OPFTogglePartialMatchCheckBox" >
+						<Size>
+							<AbsDimension x="40" y="40" />
+						</Size>
+						<Anchors>
+							<Anchor point="TOPRIGHT" relativeTo="OPFConfigRightColumn" relativePoint="TOPRIGHT" x="-15" y="-80" />
+						</Anchors>
+						<NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
+						<PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
+						<HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD" />
+						<CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
+						<Scripts>
+							<OnClick>
+								OPF.ToggleMatchingType()
+							</OnClick>
+							<OnEnter>
+								local x, y = GetCursorPosition()
+								GameTooltip:SetOwner(self, "ANCHOR_CURSOR_RIGHT")
+								GameTooltip:SetText("An option to force the replacement algorithm to require part of a word in a message in order to be replaced.\n\nPartial Matching and Exact Matching cannot both be enabled at the same time. \n\nEXAMPLE:\n* Word List: 'cow,goat,chicken'\n* Replacement: '$$$'\n* Original Message:\n'Look at that chicken with the goatee, a bunch of cowards'\n* Modified Message:\n'Look at those $$$s with the $$$ees, a bunch of $$$ards'",nil,nil,nil,nil,true)
+								GameTooltip:Show()
+							</OnEnter>
+							<OnLeave>
+								GameTooltip:Hide()
+							</OnLeave>
+						</Scripts>
+					</CheckButton>
+					<CheckButton name="OPFToggleExactMatchCheckBox">
+						<Size>
+							<AbsDimension x="40" y="40" />
+						</Size>
+						<Anchors>
+							<Anchor point="TOPRIGHT" relativeTo="OPFConfigRightColumn" relativePoint="TOPRIGHT" x="-15" y="-130" />
+						</Anchors>
+						<NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
+						<PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
+						<HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD" />
+						<CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
+						<Scripts>
+							<OnClick>
+								OPF.ToggleMatchingType()
+							</OnClick>
+							<OnEnter>
+								local x, y = GetCursorPosition()
+								GameTooltip:SetOwner(self, "ANCHOR_CURSOR_RIGHT")
+								GameTooltip:SetText("An option to force the replacement algorithm to require the exact word in a message in order to be replaced.\n\nPartial Matching and Exact Matching cannot both be enabled at the same time. \n\nEXAMPLE:\n* Word List: 'cow,goat,chicken'\n* Replacement: '$$$'\n* Original Message:\n'Look at that chicken with the goatee, what a coward'\n* Modified Message:\n'Look at that $$$ with the goatee, what a coward'",nil,nil,nil,nil,true)
+								GameTooltip:Show()
+							</OnEnter>
+							<OnLeave>
+								GameTooltip:Hide()
+							</OnLeave>
+						</Scripts>
+					</CheckButton>
+                    <CheckButton name="OPFToggleSelfMute">
+						<Size>
+							<AbsDimension x="40" y="40" />
+						</Size>
+						<Anchors>
+							<Anchor point="TOPRIGHT" relativeTo="OPFConfigRightColumn" relativePoint="TOPRIGHT" x="-15" y="-180" />
+						</Anchors>
+						<NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
+						<PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
+						<HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD" />
+						<CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
+						<Scripts>
+							<OnClick>
+								if(OPFToggleSelfMute:GetChecked()) then
+									StaticPopup_Show("CONFIRM_SELF_MUTE")
+								else
+									print('hi')
+									OPF.ToggleSelfMute()
+								end
+							</OnClick>
+							<OnEnter>
+								local x, y = GetCursorPosition()
+								GameTooltip:SetOwner(self, "ANCHOR_CURSOR_RIGHT")
+								GameTooltip:SetText("An option to self-mute in-game.\n\nWARNING:\nIf enabled, you will not be able to disable the option whilst in any instance (for the sake of self-preservation).",nil,nil,nil,nil,true)
+								GameTooltip:Show()
+							</OnEnter>
+							<OnLeave>
+								GameTooltip:Hide()
+							</OnLeave>
+						</Scripts>
+					</CheckButton>
+				</Frames>
+			</Frame>
+            <Button name="ResetAllToDefaults" inherits="UIPanelButtonTemplate" text="Reset All To Defaults">
                 <Size>
-                    <AbsDimension x="200" y="300"/>
+                    <AbsDimension x="160" y="35" />
                 </Size>
                 <Anchors>
-                    <Anchor point="TOPLEFT" relativeTo="OPFConfigFrame" relativePoint="TOPLEFT" x="0" y="0"/>
-                </Anchors>
-                <Frames>
-                    <Button name="ShowWordsToReplaceUIButton" inherits="GameMenuButtonTemplate" text="Words">
-                        <Size>
-                            <AbsDimension x="160" y="35"/>
-                        </Size>
-                        <Anchors>
-                            <Anchor point="TOPLEFT" relativeTo="OPFConfigTopLeftCorner" relativePoint="TOPLEFT" x="30" y="-60"/>
-                        </Anchors>
-                        <Scripts>
-                            <OnClick>
-                        OPF.ShowWordsToReplaceUI()
-                    </OnClick>
-                            <OnEnter>
-                         local x, y = GetCursorPosition()
-                        GameTooltip:SetOwner(self, "ANCHOR_NONE")
-                        GameTooltip:SetPoint("TOP", ShowWordsToReplaceUIButton, "TOP", 0, 35)
-                        GameTooltip:SetText("Configure the list of words that will be replaced.")
-                        GameTooltip:Show()
-                    </OnEnter>
-                            <OnLeave>                        
-                        GameTooltip:Hide()
-                    </OnLeave>
-                        </Scripts>
-                    </Button>
-                    <Button name="ShowDefaultWordReplacementUIButton" inherits="GameMenuButtonTemplate" text="Default Replacement">
-                        <Size>
-                            <AbsDimension x="160" y="35"/>
-                        </Size>
-                        <Anchors>
-                            <Anchor point="TOPLEFT" relativeTo="OPFConfigTopLeftCorner" relativePoint="TOPLEFT" x="30" y="-100"/>
-                        </Anchors>
-                        <Scripts>
-                            <OnClick>
-                        OPF.ShowDefaultWordReplacementUI()
-                    </OnClick>
-                            <OnEnter>
-                         local x, y = GetCursorPosition()
-                        GameTooltip:SetOwner(self, "ANCHOR_NONE")
-                        GameTooltip:SetPoint("TOP", ShowDefaultWordReplacementUIButton, "TOP", 0, 35)
-                        GameTooltip:SetText("Configure the default replacement for all words in the list.")
-                        GameTooltip:Show()
-                    </OnEnter>
-                            <OnLeave>                        
-                        GameTooltip:Hide()
-                    </OnLeave>
-                        </Scripts>
-                    </Button>
-                    <Button name="ShowWordReplacementOverridesUIButton" inherits="GameMenuButtonTemplate" text="Replacement Overrides">
-                        <Size>
-                            <AbsDimension x="160" y="35"/>
-                        </Size>
-                        <Anchors>
-                            <Anchor point="TOPLEFT" relativeTo="OPFConfigTopLeftCorner" relativePoint="TOPLEFT" x="30" y="-140"/>
-                        </Anchors>
-                        <Scripts>
-                            <OnClick>
-                        OPF.ShowWordReplacementOverridesUI()
-                    </OnClick>
-                            <OnEnter>
-                         local x, y = GetCursorPosition()
-                        GameTooltip:SetOwner(self, "ANCHOR_NONE")
-                        GameTooltip:SetPoint("TOP", ShowWordReplacementOverridesUIButton, "TOP", 0, 35)
-                        GameTooltip:SetText("Configure override replacements for specific words instead of the default.")
-                        GameTooltip:Show()
-                    </OnEnter>
-                            <OnLeave>                        
-                        GameTooltip:Hide()
-                    </OnLeave>
-                        </Scripts>
-                    </Button>
-                </Frames>
-            </Frame>
-            <Frame name="OPFConfigTopRightCorner">
-                <Size>
-                    <AbsDimension x="200" y="300"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="TOPRIGHT" relativeTo="OPFConfigFrame" relativePoint="TOPRIGHT" x="0" y="0"/>
-                </Anchors>
-                <Frames>
-                    <CheckButton name="OPFTogglePartialMatchCheckBox">
-                        <Size>
-                            <AbsDimension x="40" y="40"/>
-                        </Size>
-                        <Anchors>
-                            <Anchor point="TOPRIGHT" relativeTo="OPFConfigTopRightCorner" relativePoint="TOPRIGHT" x="-30" y="-60"/>
-                        </Anchors>
-                        <NormalTexture file="Interface\Buttons\UI-CheckBox-Up"/>
-                        <PushedTexture file="Interface\Buttons\UI-CheckBox-Down"/>
-                        <HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD"/>
-                        <CheckedTexture file="Interface\Buttons\UI-CheckBox-Check"/>
-                        <Scripts>
-                            <OnClick>
-                        OPF.ToggleMatchingType()
-                    </OnClick>
-                        </Scripts>
-                    </CheckButton>
-                     <CheckButton name="OPFToggleExactMatchCheckBox">
-                        <Size>
-                            <AbsDimension x="40" y="40"/>
-                        </Size>
-                        <Anchors>
-                            <Anchor point="TOPRIGHT" relativeTo="OPFConfigTopRightCorner" relativePoint="TOPRIGHT" x="-30" y="-100"/>
-                        </Anchors>
-                        <NormalTexture file="Interface\Buttons\UI-CheckBox-Up"/>
-                        <PushedTexture file="Interface\Buttons\UI-CheckBox-Down"/>
-                        <HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD"/>
-                        <CheckedTexture file="Interface\Buttons\UI-CheckBox-Check"/>
-                        <Scripts>
-                            <OnClick>
-                        OPF.ToggleMatchingType()
-                    </OnClick>
-                        </Scripts>
-                    </CheckButton>
-                </Frames>
-            </Frame>
-            <!-- <Button name="ResetAllToDefaults" inherits="UIPanelButtonTemplate" text="Reset all to Defaults">
-                <Size>
-                    <AbsDimension x="200" y="30"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="CENTER" relativePoint="CENTER" x="0" y="-100"/>
+                    <Anchor point="BOTTOM" relativePoint="BOTTOM" relativeTo="OPFConfigFrame" x="0" y="20" />
                 </Anchors>
                 <Scripts>
                     <OnClick>
-            StaticPopup_Show("CONFIRM_OPF_RESET")
-                </OnClick>
+                        StaticPopup_Show("CONFIRM_OPF_RESET")
+                    </OnClick>
                 </Scripts>
-            </Button>  -->
-            </Frames>
-            <Layers>
-            <Layer level="OVERLAY">
-                <FontString name="OPFTogglePartialMatchCheckBoxLabel" inherits="GameFontHighlight" text="Partial Matching">
-                     <Size>
-                            <AbsDimension x="160" y="35"/>
-                        </Size>
-                      <Anchors>
-                    <Anchor point="TOPLEFT" relativeTo="OPFConfigTopRightCorner" relativePoint="TOPLEFT" x="-10" y="-60"/>
-                </Anchors>
-                </FontString>
-            </Layer>
-            <Layer level="OVERLAY">
-                <FontString name="OPFToggleExactMatchCheckBoxLabel" inherits="GameFontHighlight" text="Exact Matching">
-                     <Size>
-                            <AbsDimension x="160" y="35"/>
-                        </Size>
-                      <Anchors>
-                    <Anchor point="TOPLEFT" relativeTo="OPFConfigTopRightCorner" relativePoint="TOPLEFT" x="-10" y="-100"/>
-                </Anchors>
-                </FontString>
-            </Layer>
-        </Layers>
-        </Frame>
-    </Ui>
+            </Button>
+		</Frames>
+	</Frame>
+</Ui>

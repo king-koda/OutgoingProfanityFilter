@@ -7,7 +7,8 @@
 
 utils/InitialiseOPFGlobal.lua
 
-utils/ToggleShouldReplaceByExactWordMatch.lua
+utils/SelfMute.lua
+utils/ReplaceByWordMatchType.lua
 utils/ReplaceWords.lua
 utils/ResetSavedVariables.lua
 utils/EscapeText.lua

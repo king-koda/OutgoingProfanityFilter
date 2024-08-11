@@ -16,9 +16,25 @@ local function InitializeAddon()
         text = "Are you sure you want to reset all the addons settings to defaults?",
         button1 = "YES",
         button2 = "NO",
+        OnAccept = function() OPFData = OPF.ResetSavedVariables() end,
+        timeout = 0,
+        whileDead = true,
+        hideOnEscape = true,
+        preferredIndex = 3,
+        area = "center"
+    }
+
+    StaticPopupDialogs["CONFIRM_SELF_MUTE"] = {
+        text = "Are you sure you want to self-mute? This option can not be disabled whilst in an instance (for the sake of self-preservation)",
+        button1 = "YES",
+        button2 = "NO",
         OnAccept = function()
-            OPFData = OPF.ResetSavedVariables()
-            -- ReloadUI()
+            -- proceed with toggling on warning acceptance
+            OPF.ToggleSelfMute()
+        end,
+        OnCancel = function()
+            -- reset button state on cancel
+            OPF.SetSelfMuteCheckButtonState(OPFData["shouldSelfMute"])
         end,
         timeout = 0,
         whileDead = true,
@@ -71,7 +87,9 @@ local function InitializeAddon()
 
     -- Function to show the main frame
     local function ShowConfigFrame()
-        OPF.SetCheckButtonStates()
+        -- set checkbox states on UI open
+        OPF.SetReplaceByMatchCheckButtonStates()
+        OPF.SetSelfMuteCheckButtonState(OPFData["shouldSelfMute"])
         ShowUIPanel(OPFConfigFrame)
     end
 
