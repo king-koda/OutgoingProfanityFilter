@@ -1,10 +1,10 @@
+-- removes words that are no longer in the text area from the overrides table
 local function PruneExistingTable(text)
     for word, override in pairs(OPFData["wordsToReplaceWithOverridesTable"]) do
         local escapedWord = OPF.EscapeText(word)
         if not (string.find(text, "%f[%a]" .. escapedWord .. "%f[%A]")) then
             OPFData["wordsToReplaceWithOverridesTable"][word] = nil
         end
-
     end
 end
 
@@ -48,8 +48,6 @@ local function WordsToReplaceSave()
     end
 
     OPFData["wordsToReplaceString"] = table.concat(wordsToReplaceTable, ",")
-
-    OPF.ShowConfigFrame()
 end
 
 -- function for saving and reloading the addon after inserting the default word replacement
@@ -62,8 +60,6 @@ local function DefaultWordReplacementSave()
     text = string.gsub(text, "\n", "")
 
     OPFData["defaultWordReplacement"] = text
-
-    OPF.ShowConfigFrame()
 end
 
 -- function for saving and reloading the addon after inserting the word replacement overrides
@@ -85,8 +81,6 @@ local function WordReplacementOverridesSave()
 
         OPFData.wordsToReplaceWithOverridesTable[word] = override
     end
-
-    OPF.ShowConfigFrame()
 end
 
 OPF.WTR.Save = WordsToReplaceSave

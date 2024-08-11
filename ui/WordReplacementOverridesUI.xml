@@ -63,12 +63,25 @@
                     </Frame>
                 </ScrollChild>
             </ScrollFrame>
-            <Button name="WordReplacementOverridesSaveButton" inherits="UIPanelButtonTemplate" text="Save">
+            <Button name="WordReplacementOverridesBackButton" inherits="UIPanelButtonTemplate" text="Back">
                 <Size>
-                    <AbsDimension x="140" y="22"/>
+                    <AbsDimension x="60" y="22"/>
                 </Size>
                 <Anchors>
-                    <Anchor point="BOTTOM" relativePoint="BOTTOM" x="0" y="10"/>
+                    <Anchor point="BOTTOM" relativePoint="BOTTOM" x="-40" y="10"/>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        OPF.ShowConfigFrame()
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <Button name="WordReplacementOverridesSaveButton" inherits="UIPanelButtonTemplate" text="Save">
+                <Size>
+                    <AbsDimension x="60" y="22"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="BOTTOM" relativePoint="BOTTOM" x="40" y="10"/>
                 </Anchors>
                 <Scripts>
                     <OnClick>
