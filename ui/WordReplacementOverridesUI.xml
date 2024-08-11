@@ -5,23 +5,23 @@
         </Size>
         <Layers>
             <Layer level="OVERLAY">
-                <FontString name="WordReplacementOverridesUITitle" inherits="GameFontHighlightLarge" text="Outgoing Profanity Filter">
+                <FontString name="WordReplacementOverridesUITitle" inherits="GameFontGreen" text="Outgoing Profanity Filter">
                     <Anchors>
-                        <Anchor point="TOP" relativePoint="TOP" x="0" y="-3"/>
+                        <Anchor point="TOP" relativePoint="TOP" x="0" y="-5"/>
                     </Anchors>
                 </FontString>
             </Layer>
             <Layer level="OVERLAY">
-                <FontString name="WordReplacementOverridesUISubtitle" inherits="GameFontNormal" text="Configure Word Replacement Overrides">
+                <FontString name="WordReplacementOverridesUISubtitle" inherits="GameFontNormalLarge" text="Replacement Overrides">
                     <Anchors>
-                        <Anchor point="TOP" relativePoint="TOP" x="0" y="-35"/>
+						<Anchor point="TOP" relativeTo="$parent" relativePoint="TOP" x="0" y="-40" />
                     </Anchors>
                 </FontString>
             </Layer>
             <Layer level="OVERLAY">
                 <FontString name="WordReplacementOverridesUICurrentCharacterText" inherits="GameFontHighlightSmall">
                     <Anchors>
-                        <Anchor point="TOP" relativePoint="TOP" x="0" y="-55"/>
+                        <Anchor point="TOP" relativePoint="TOP" x="0" y="-60"/>
                     </Anchors>
                 </FontString>
             </Layer>
@@ -32,12 +32,11 @@
                     <AbsDimension x="20" y="16"/>
                 </Size>
                 <Anchors>
-                    <Anchor point="TOPRIGHT" relativeTo="WordReplacementOverridesUI" relativePoint="TOPRIGHT" x="-15" y="-30"/>
+                    <Anchor point="TOPRIGHT" relativeTo="WordReplacementOverridesUI" relativePoint="TOPRIGHT" x="-15" y="-40" />
                 </Anchors>
                 <Scripts>
                     <OnClick>
-                            GameTooltip:SetOwner(self, "ANCHOR_NONE")
-                            GameTooltip:SetPoint("TOP", WordReplacementOverridesUIInfoIconButton, "BOTTOM", 0, -10)
+                            GameTooltip:SetOwner(self, "ANCHOR_CURSOR_RIGHT")
                             GameTooltip:SetText("A word or character should be provided in the input box below, that will be used when sending messages to replace any of the words included in the Words To Replace config.\n\nExample:\n* Default Replacement: $$\n* Words to Replace List: cow,chicken,muffin,donkey\n* Original Message: 'The silly COW chiCken had its DOnkey in a MUFFIN'\n* Sent Message: 'The silly $$ $$ had its $$ in a $$'",1,1,1,1,true)
                             GameTooltip:Show()
                         </OnClick>
@@ -48,10 +47,10 @@
             </Button>
             <ScrollFrame name="WordReplacementOverridesScrollFrame" inherits="UIPanelScrollFrameTemplate">
                 <Size>
-                    <AbsDimension x="360" y="160"/>
+                    <AbsDimension x="360" y="155"/>
                 </Size>
                 <Anchors>
-                    <Anchor point="TOPLEFT" relativePoint="TOPLEFT" x="0" y="-70"/>
+                    <Anchor point="TOPLEFT" relativePoint="TOPLEFT" x="0" y="-75"/>
                 </Anchors>
                 <ScrollChild>
                     <Frame name="WordReplacementOverridesContent">
@@ -64,7 +63,7 @@
                     </Frame>
                 </ScrollChild>
             </ScrollFrame>
-            <Button name="WordReplacementOverridesSaveAndReloadButton" inherits="UIPanelButtonTemplate" text="Save and Reload">
+            <Button name="WordReplacementOverridesSaveButton" inherits="UIPanelButtonTemplate" text="Save">
                 <Size>
                     <AbsDimension x="140" y="22"/>
                 </Size>
@@ -73,7 +72,7 @@
                 </Anchors>
                 <Scripts>
                     <OnClick>
-                        OPF.WRO.SaveAndReload()
+                        OPF.WRO.Save()
                     </OnClick>
                 </Scripts>
             </Button>

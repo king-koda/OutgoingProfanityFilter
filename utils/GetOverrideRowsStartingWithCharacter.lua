@@ -16,14 +16,17 @@ local function GetOverrideRowsStartingWithCharacter(character)
 
     local seen = {}
 
+    -- create an independent index to control the y position of the rows, as using the frameNumberIndex results in incorrect positioning
+    local startYIndex = 1
     for word, override in pairs(OPFData["wordsToReplaceWithOverridesTable"]) do
         -- if seen already, return early
         if (seen[word]) then return end
 
         if (character == '++') then
             local hasCharacter = false
+
             for index, paginationIndex in ipairs(OPF.WRO.paginationIndexes) do
-                -- only loop if we are not at ++ character
+                -- ensure that the word doesn't belong to another character before generating it for the ++ character
                 if (paginationIndex ~= '++') then
                     -- if the word belongs to another character, skip it
                     if string.sub(word, 1, 1) == paginationIndex then
@@ -34,25 +37,31 @@ local function GetOverrideRowsStartingWithCharacter(character)
 
             -- if the word doesn't belong to another character, generate it for the ++ character
             if (hasCharacter == false) then
-                OPF.WRO.GenerateOverrideRow(parentFrame,
-                                            OPF.WRO.frameNumberIndex, word,
-                                            override, character)
+                startYIndex = OPF.WRO.GenerateOverrideRow(parentFrame, OPF.WRO
+                                                              .frameNumberIndex,
+                                                          word, override,
+                                                          character, startYIndex)
+
+                -- increment unique frame index count
                 OPF.WRO.frameNumberIndex = OPF.WRO.frameNumberIndex + 1
             end
+
         elseif string.sub(word, 1, 1) == character then
-            OPF.WRO.GenerateOverrideRow(parentFrame, OPF.WRO.frameNumberIndex,
-                                        word, override, character)
+            startYIndex = OPF.WRO.GenerateOverrideRow(parentFrame,
+                                                      OPF.WRO.frameNumberIndex,
+                                                      word, override, character,
+                                                      startYIndex)
+
+            -- increment unique frame index count
             OPF.WRO.frameNumberIndex = OPF.WRO.frameNumberIndex + 1
         end
 
         seen[word] = true
-
     end
 
     if (character == '++') then
         currentCharacterTextFrame:SetText(
             "Currently displaying words starting with any non-listed characters")
-        return
     else
         currentCharacterTextFrame:SetText(
             "Currently displaying words starting with '" ..

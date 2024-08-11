@@ -32,7 +32,7 @@
 					</Layer>
 				</Layers>
 				<Frames>
-					<Button name="ShowWordsToReplaceUIButton" inherits="GameMenuButtonTemplate" text="Words">
+					<Button name="ShowWordsToReplaceUIButton" inherits="GameMenuButtonTemplate" text="Words To Replace">
 						<Size>
 							<AbsDimension x="160" y="35" />
 						</Size>

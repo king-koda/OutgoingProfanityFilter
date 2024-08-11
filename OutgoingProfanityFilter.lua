@@ -97,7 +97,7 @@ local function InitializeAddon()
     local function ShowWordsToReplaceUI()
         local ui = _G["WordsToReplaceUI"]
         local textArea = _G["WordsToReplaceTextArea"]
-
+        local scrollFrame = _G["WordsToReplaceScrollFrame"]
         -- populate the text area with the current OPFData["wordsToReplaceString"]
         textArea:SetText(OPFData["wordsToReplaceString"] or "")
         textArea:SetBackdrop({
@@ -105,6 +105,10 @@ local function InitializeAddon()
             tileSize = 400,
             insets = {left = -10, right = -10, top = -10, bottom = -400}
         })
+
+        -- reset scrollbar position when opening words to replace UI
+        scrollFrame.ScrollBar:SetValue(0)
+
         ShowUIPanel(ui)
     end
 
@@ -132,6 +136,7 @@ local function InitializeAddon()
     SlashCmdList["OPF"] = ShowConfigFrame
 
     -- add necessary functions to OPF global
+    OPF.ShowConfigFrame = ShowConfigFrame
     OPF.ShowDefaultWordReplacementUI = ShowDefaultWordReplacementUI
     OPF.ShowWordsToReplaceUI = ShowWordsToReplaceUI
     OPF.ShowWordReplacementOverridesUI = ShowWordReplacementOverridesUI

@@ -1,7 +1,6 @@
 -- Function to update the words to replace UI text area with highlighted text when searching
 local function UpdateTextArea()
     local textArea = _G["WordsToReplaceTextArea"]
-    local searchLabel = _G["WordsToReplaceSearchLabel"]
     local searchBox = _G["WordsToReplaceSearchBox"]
 
     -- re-intialize the global search results table so we remove all previous search results
@@ -17,10 +16,6 @@ local function UpdateTextArea()
         if (updatedTextWithHighlights ~= nil) then
             textArea:SetText(updatedTextWithHighlights)
         end
-
-        searchLabel:Hide()
-    else
-        searchLabel:Show()
     end
 end
 

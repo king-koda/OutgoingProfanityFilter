@@ -1,4 +1,5 @@
-local function GenerateOverrideRow(parent, index, word, override, character)
+local function GenerateOverrideRow(parent, index, word, override, character,
+                                   startYIndex)
     if (OPF.WRO.currentCharacterFrames[character] == nil) then
         OPF.WRO.currentCharacterFrames[character] = {}
     end
@@ -8,7 +9,7 @@ local function GenerateOverrideRow(parent, index, word, override, character)
         local line = CreateFrame("Frame",
                                  "WordReplacementOverridesLine" .. index, parent)
         line:SetSize(340, 30)
-        line:SetPoint("TOPLEFT", parent, 10, -10 - (index - 1) * 35)
+        line:SetPoint("TOPLEFT", parent, 10, -10 - (startYIndex - 1) * 35)
 
         local nonEditable = line:CreateFontString(
                                 "WordReplacementOverridesLine" .. index ..
@@ -29,7 +30,7 @@ local function GenerateOverrideRow(parent, index, word, override, character)
 
         -- add each generated line to the currentCharacterFrames table for the given character index
         OPF.WRO.currentCharacterFrames[character][word] = line
-        return
+        return startYIndex + 1
     end
 
     -- if the frame already exists, show it

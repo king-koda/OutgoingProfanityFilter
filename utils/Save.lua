@@ -9,7 +9,7 @@ local function PruneExistingTable(text)
 end
 
 -- function for saving and reloading the addon after inserting new words to replace
-local function WordsToReplaceSaveAndReload()
+local function WordsToReplaceSave()
     local textArea = _G["WordsToReplaceTextArea"]
     -- table to track if value in parsed string has already been encountered
     local seen = {}
@@ -26,7 +26,6 @@ local function WordsToReplaceSaveAndReload()
     if (text == "") then
         OPFData["wordsToReplaceWithOverridesTable"] = {}
         OPFData["wordsToReplaceString"] = ""
-        -- ReloadUI()
     end
 
     -- removes words that are no longer in the text area
@@ -50,11 +49,11 @@ local function WordsToReplaceSaveAndReload()
 
     OPFData["wordsToReplaceString"] = table.concat(wordsToReplaceTable, ",")
 
-    -- ReloadUI()
+    OPF.ShowConfigFrame()
 end
 
 -- function for saving and reloading the addon after inserting the default word replacement
-local function DefaultWordReplacementSaveAndReload()
+local function DefaultWordReplacementSave()
     local textArea = _G["DefaultWordReplacementTextArea"]
 
     local text = textArea:GetText()
@@ -64,11 +63,11 @@ local function DefaultWordReplacementSaveAndReload()
 
     OPFData["defaultWordReplacement"] = text
 
-    -- ReloadUI()
+    OPF.ShowConfigFrame()
 end
 
 -- function for saving and reloading the addon after inserting the word replacement overrides
-local function WordReplacementOverridesSaveAndReload()
+local function WordReplacementOverridesSave()
     local wordReplacementOverridesContent =
         _G["WordReplacementOverridesContent"]
     local wordReplacementOverridesLines =
@@ -87,9 +86,9 @@ local function WordReplacementOverridesSaveAndReload()
         OPFData.wordsToReplaceWithOverridesTable[word] = override
     end
 
-    -- ReloadUI()
+    OPF.ShowConfigFrame()
 end
 
-OPF.WTR.SaveAndReload = WordsToReplaceSaveAndReload
-OPF.DWR.SaveAndReload = DefaultWordReplacementSaveAndReload
-OPF.WRO.SaveAndReload = WordReplacementOverridesSaveAndReload
+OPF.WTR.Save = WordsToReplaceSave
+OPF.DWR.Save = DefaultWordReplacementSave
+OPF.WRO.Save = WordReplacementOverridesSave
