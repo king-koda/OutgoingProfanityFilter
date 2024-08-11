@@ -70,7 +70,11 @@ local function InitializeAddon()
     end
 
     -- Function to show the main frame
-    local function ShowConfigFrame() ShowUIPanel(OPFConfigFrame) end
+    local function ShowConfigFrame()
+        local checkBox = _G["OPFToggleExactMatchCheckBox"]
+        checkBox:SetChecked(OPFData["shouldReplaceByExactWordMatch"] or false)
+        ShowUIPanel(OPFConfigFrame) 
+    end
 
     -- Functions to show the individual frames
     local function ShowWordsToReplaceUI()

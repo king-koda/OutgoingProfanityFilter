@@ -98,13 +98,13 @@
                     <OnClick>
                         OPF.ToggleExactMatching()
                     </OnClick>
-                    <OnLoad>
+                    <!-- <OnLoad>
                         if (OPF.GetExactMatchButtonState() == 'true') then
                             OPFToggleExactMatchCheckBox:SetChecked(true)
                         else
                             OPFToggleExactMatchCheckBox:SetChecked(false)
                         end
-                    </OnLoad>
+                    </OnLoad> -->
                 </Scripts>
             </CheckButton>
             <Button name="ResetAllToDefaults" inherits="UIPanelButtonTemplate" text="Reset all to Defaults">

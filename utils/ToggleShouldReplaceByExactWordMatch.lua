@@ -1,11 +1,16 @@
 local function ToggleShouldReplaceByExactWordMatch()
-    OPFData["shouldReplaceByExactWordMatch"] =
-        not OPFData["shouldReplaceByExactWordMatch"]
+    if(OPFData["shouldReplaceByExactWordMatch"] ~= nil) then
+        OPFData["shouldReplaceByExactWordMatch"] =
+            not OPFData["shouldReplaceByExactWordMatch"]
+    end
 end
 
-local function GetExactMatchButtonState()
-    return OPFData["shouldReplaceByExactWordMatch"]
-end
+-- local function GetExactMatchButtonState()
+--     if(OPFData["shouldReplaceByExactWordMatch"] ~= nil) then
+--         return OPFData["shouldReplaceByExactWordMatch"]
+--     end
+--     return false
+-- end
 
 OPF.ToggleExactMatching = ToggleShouldReplaceByExactWordMatch
-OPF.GetExactMatchButtonState = GetExactMatchButtonState
+--OPF.GetExactMatchButtonState = GetExactMatchButtonState
