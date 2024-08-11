@@ -8,7 +8,14 @@ Instructions:
 5. Toggle whether you prefer partial or exact word matching algorithm to be in use (default/partial is the safest option but more intrusive)
 6. Toggle self mute if preferred
 
+Commands:
+/opf -> addon configuration
+/opfsm -> toggle self-mute
+
 Tips:
 Be sure to read all provided tooltips and information from info icons for help and understanding the features.
 
 Please report any bugs or problems encountered via Issues, and Star the project if you appreciate it and it helps you :)
+
+For anyone looking to donate, thanks in advance!
+https://ko-fi.com/therealraditz
