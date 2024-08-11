@@ -71,9 +71,8 @@ local function InitializeAddon()
 
     -- Function to show the main frame
     local function ShowConfigFrame()
-        local checkBox = _G["OPFToggleExactMatchCheckBox"]
-        checkBox:SetChecked(OPFData["shouldReplaceByExactWordMatch"] or false)
-        ShowUIPanel(OPFConfigFrame) 
+        OPF.SetCheckButtonStates()
+        ShowUIPanel(OPFConfigFrame)
     end
 
     -- Functions to show the individual frames
