@@ -13,10 +13,10 @@ local function SetSelfMuteCheckButtonState(state)
     selfMuteCheckBox:SetChecked(state)
 end
 
-local function ToggleSelfMute()
+local function ToggleSelfMute(shouldVerbose)
     -- prevent self-mute toggling when in an instance, and throw a warning message in the chat
     if (OPFData["shouldSelfMute"] and IsInInstance()) then
-        print("WARNING: You cannot remove self-mute in an instance.")
+        print("ERROR: You cannot remove self-mute in an instance.")
         SetSelfMuteCheckButtonState(true)
         return
     end
@@ -26,6 +26,11 @@ local function ToggleSelfMute()
 
     local state = OPFData["shouldSelfMute"]
     SetSelfMuteCheckButtonState(state)
+
+    if (shouldVerbose) then
+        print('WARNING: Self Mute is now ' ..
+                  (OPFData['shouldSelfMute'] and 'enabled' or 'disabled'))
+    end
 end
 
 OPF.ToggleSelfMute = ToggleSelfMute

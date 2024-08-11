@@ -219,7 +219,6 @@
 								if(OPFToggleSelfMute:GetChecked()) then
 									StaticPopup_Show("CONFIRM_SELF_MUTE")
 								else
-									print('hi')
 									OPF.ToggleSelfMute()
 								end
 							</OnClick>

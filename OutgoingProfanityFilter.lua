@@ -135,6 +135,10 @@ local function InitializeAddon()
     SLASH_OPF1 = "/opf"
     SlashCmdList["OPF"] = ShowConfigFrame
 
+    -- Register the /opfsm command
+    SLASH_OPFSM1 = "/opfsm"
+    SlashCmdList["OPFSM"] = function() OPF.ToggleSelfMute(true) end
+
     -- add necessary functions to OPF global
     OPF.ShowConfigFrame = ShowConfigFrame
     OPF.ShowDefaultWordReplacementUI = ShowDefaultWordReplacementUI
