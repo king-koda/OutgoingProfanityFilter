@@ -92,4 +92,3 @@ local function ReplaceWords(modifiedMessage)
 end
 
 OPF.ReplaceWords = ReplaceWords
-OPF.GetWordsFromMessage = GetWordsFromMessage
