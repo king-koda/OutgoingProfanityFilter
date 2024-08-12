@@ -8,8 +8,8 @@ local function ToggleMatchingType()
 end
 
 local function SetReplaceByMatchCheckButtonStates()
-    local partialMatchCheckBox = _G["OPFToggleExactMatchCheckBox"]
-    local exactMatchCheckBox = _G["OPFTogglePartialMatchCheckBox"]
+    local exactMatchCheckBox = _G["OPFToggleExactMatchCheckBox"]
+    local partialMatchCheckBox = _G["OPFTogglePartialMatchCheckBox"]
     local state = OPF.GetShouldReplaceByExactMatchButtonState()
 
     -- if partial matching is enabled, disable exact matching and vice versa
@@ -23,13 +23,7 @@ local function SetReplaceByMatchCheckButtonStates()
 end
 
 local function GetShouldReplaceByExactMatchButtonState()
-    if (OPFData["shouldReplaceByExactWordMatch"] ~= nil) then
-        return OPFData["shouldReplaceByExactWordMatch"]
-    end
-
-    -- if the value is nil for some reason, set it to false
-    OPFData["shouldReplaceByExactWordMatch"] = false
-    return false
+    return OPFData["shouldReplaceByExactWordMatch"]
 end
 
 OPF.ToggleMatchingType = ToggleMatchingType
