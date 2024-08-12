@@ -12,8 +12,8 @@ Instructions:
 7. For a list of example profanity to use with the addon, copy and paste the list at https://github.com/koda313/profanity-list/blob/main/words.txt
 
 Commands:
-/opf -> addon configuration
-/opfsm -> toggle self-mute
+1. /opf -> addon configuration
+2. /opfsm -> toggle self-mute
 
 Tips:
 Be sure to read all provided tooltips and information from info icons for help and understanding the features.
