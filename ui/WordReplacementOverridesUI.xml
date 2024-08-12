@@ -37,7 +37,7 @@
                 <Scripts>
                     <OnClick>
                             GameTooltip:SetOwner(self, "ANCHOR_CURSOR_RIGHT")
-                            GameTooltip:SetText("A word or character should be provided in the input box below, that will be used when sending messages to replace any of the words included in the Words To Replace config.\n\nExample:\n* Default Replacement: $$\n* Words to Replace List: cow,chicken,muffin,donkey\n* Original Message: 'The silly COW chiCken had its DOnkey in a MUFFIN'\n* Sent Message: 'The silly $$ $$ had its $$ in a $$'",1,1,1,1,true)
+                            GameTooltip:SetText("Each word or character in the previously provided Words To Replace list will appear here under it's respectful index, with all characters not beginning with an alphabetic character listed under the '++' index.\n\nAn input box can be found alongside each of the words, that allows a user to enter a replacement override that will be used instead of the default replacement.\n\nTips:\n* If the user would like to have a word replaced with an empty value instead of another word or character, enter a SPACE into the input box",1,1,1,1,true)
                             GameTooltip:Show()
                         </OnClick>
                     <OnLeave>

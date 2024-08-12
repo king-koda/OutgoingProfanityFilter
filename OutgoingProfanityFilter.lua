@@ -16,7 +16,10 @@ local function InitializeAddon()
         text = "Are you sure you want to reset all the addons settings to defaults?",
         button1 = "YES",
         button2 = "NO",
-        OnAccept = function() OPFData = OPF.ResetSavedVariables() end,
+        OnAccept = function()
+            OPFData = OPF.ResetSavedVariables()
+            OPF.ShowConfigFrame()
+        end,
         timeout = 0,
         whileDead = true,
         hideOnEscape = true,
