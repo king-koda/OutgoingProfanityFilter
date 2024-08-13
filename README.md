@@ -1,6 +1,6 @@
 # Outgoing Profanity Filter
 
-A world of warcraft addon that can be used to filter out/ replace words in the users outgoing messages, to: bypass automated abuse bans, pretend to be friendly when insulting (word replacement), prevent manual abuse report scenarios, or to self mute entirely.
+A world of warcraft addon that can be used to filter out/ replace words in the users outgoing messages, to: bypass automated abuse bans, swap words with other words, roleplay, prevent manual abuse report scenarios, or to self mute entirely.
 
 Instructions:
 1. Install via Curseforge or pasting the source code to Addons folder.
