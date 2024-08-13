@@ -15,15 +15,27 @@ local function GetWordsFromMessage(message)
     return wordsFromFilteredMessage
 end
 
+local function replaceSubstring(message, startIndex, endIndex, replacement)
+    -- Slice the string into three parts
+    local before = message:sub(1, startIndex - 1)
+    local after = message:sub(endIndex + 1)
+
+    -- Concatenate the parts with the replacement
+    message = before .. replacement .. after
+
+    return message
+end
+
 local function ReplaceWordsByPartialMatch(message)
     local replacement = OPFData["defaultWordReplacement"]
 
     for word, replacementOverride in pairs(
                                          OPFData["wordsToReplaceWithOverridesTable"]) do
-        local escapedWord = OPF.EscapeText(word)
+        local escapedWord = OPF.EscapeText(string.lower(word))
 
         -- do a quick check to see if the word is in the message before doing a replace
-        local wordShouldBeReplaced = message:find(escapedWord)
+        local wordShouldBeReplaced = string.lower(message):find(escapedWord)
+
         if (wordShouldBeReplaced) then
             -- replacementOverride will never be nil from check above
             -- if the override is a space, then replace with nothing
@@ -36,8 +48,18 @@ local function ReplaceWordsByPartialMatch(message)
                 replacement = OPFData["wordsToReplaceWithOverridesTable"][word]
             end
 
-            -- replace word with a universal override
-            message = message:gsub(escapedWord, replacement)
+            -- tracks which match we are currently replacing
+            local currentMatchIndex = 1
+            -- loop through all the matches for the word in the message, and replace them one by one using their indexes
+            for match in string.gmatch(string.lower(message), escapedWord) do
+                local startIndex, endIndex =
+                    string.lower(message):find(escapedWord, currentMatchIndex)
+                if (startIndex and endIndex) then
+                    message = replaceSubstring(message, startIndex, endIndex,
+                                               replacement)
+                    currentMatchIndex = currentMatchIndex + 1
+                end
+            end
         end
     end
     return message
@@ -48,7 +70,7 @@ local function ReplaceWordsByExactMatch(message)
     local replacement = OPFData["defaultWordReplacement"]
 
     for word in words do
-        local escapedMessageWord = OPF.EscapeText(word)
+        local escapedMessageWord = OPF.EscapeText(string.lower(word))
 
         local isNonSpecial = escapedMessageWord:match("^[%w_]+$") ~= nil
         if (isNonSpecial) then

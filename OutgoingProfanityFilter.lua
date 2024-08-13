@@ -74,10 +74,7 @@ local function InitializeAddon()
 
     -- override the original function
     function SendChatMessage(message, ...)
-        -- set message to lowercase for easier comparison, and disallow bypassing via capitalization
-        local modifiedMessage = string.lower(message)
-
-        if (pcall(function() message = OPF.ReplaceWords(modifiedMessage) end)) then
+        if (pcall(function() message = OPF.ReplaceWords(message) end)) then
         else
             print(
                 'ERROR: Outgoing Profanity Filter had an issue replacing the words in the previous sentence, please report this to the addon author on GitHub with your list of words or the culprit word, and the sentence it failed on.')
