@@ -2,7 +2,7 @@
 	<Script file="OutgoingProfanityFilter.lua" />
 	<Frame name="OPFConfigFrame" frameStrata="HIGH" hidden="true" enableMouse="true" clampedToScreen="true" topLevel="true" inherits="BackdropTemplate, BasicFrameTemplateWithInset">
 		<Size>
-			<AbsDimension x="400" y="300" />
+			<AbsDimension x="400" y="350" />
 		</Size>
 		<Layers>
 			<Layer level="OVERLAY">
@@ -149,6 +149,16 @@
 							</Anchors>
 						</FontString>
 					</Layer>
+					<Layer level="OVERLAY">
+						<FontString name="OPFToggleSelfMuteInInstanceCheckBoxLabel" inherits="GameFontHighlight" justifyH="LEFT" text="Self Mute In Instance">
+							<Size>
+								<AbsDimension x="120" y="35" />
+							</Size>
+							<Anchors>
+								<Anchor point="TOP" relativeTo="OPFConfigRightColumn" relativePoint="TOP" x="-5" y="-230" />
+							</Anchors>
+						</FontString>
+					</Layer>
 				</Layers>
 				<Frames>
 					<CheckButton name="OPFTogglePartialMatchCheckBox" >
@@ -226,6 +236,36 @@
 								local x, y = GetCursorPosition()
 								GameTooltip:SetOwner(self, "ANCHOR_CURSOR_RIGHT")
 								GameTooltip:SetText("An option to self-mute in-game.\n\nWARNING:\nIf enabled, you will not be able to disable the option whilst in any instance (for the sake of self-preservation).",nil,nil,nil,nil,true)
+								GameTooltip:Show()
+							</OnEnter>
+							<OnLeave>
+								GameTooltip:Hide()
+							</OnLeave>
+						</Scripts>
+					</CheckButton>
+					<CheckButton name="OPFToggleSelfMuteInInstance">
+						<Size>
+							<AbsDimension x="40" y="40" />
+						</Size>
+						<Anchors>
+							<Anchor point="TOPRIGHT" relativeTo="OPFConfigRightColumn" relativePoint="TOPRIGHT" x="-15" y="-230" />
+						</Anchors>
+						<NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
+						<PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
+						<HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD" />
+						<CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
+						<Scripts>
+							<OnClick>
+								if(OPFToggleSelfMuteInInstance:GetChecked()) then
+									StaticPopup_Show("CONFIRM_SELF_MUTE_IN_INSTANCE")
+								else
+									OPF.ToggleSelfMuteInInstance()
+								end
+							</OnClick>
+							<OnEnter>
+								local x, y = GetCursorPosition()
+								GameTooltip:SetOwner(self, "ANCHOR_CURSOR_RIGHT")
+								GameTooltip:SetText("An option to self-mute all channels when in an instance except in party and guild.\n\nWARNING:\nIf enabled, you will not be able to disable the option whilst in any instance (for the sake of self-preservation).",nil,nil,nil,nil,true)
 								GameTooltip:Show()
 							</OnEnter>
 							<OnLeave>

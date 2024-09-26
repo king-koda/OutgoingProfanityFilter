@@ -46,6 +46,26 @@ local function InitializeAddon()
         area = "center"
     }
 
+    StaticPopupDialogs["CONFIRM_SELF_MUTE_IN_INSTANCE"] = {
+        text = "Are you sure you want to self-mute when in an instance? This option can not be disabled whilst in an instance (for the sake of self-preservation)",
+        button1 = "YES",
+        button2 = "NO",
+        OnAccept = function()
+            -- proceed with toggling on warning acceptance
+            OPF.ToggleSelfMuteInInstance()
+        end,
+        OnCancel = function()
+            -- reset button state on cancel
+            OPF.SetSelfMuteInInstanceCheckButtonState(
+                OPFData["shouldSelfMuteInInstance"])
+        end,
+        timeout = 0,
+        whileDead = true,
+        hideOnEscape = true,
+        preferredIndex = 3,
+        area = "center"
+    }
+
     -- Initialize saved variables
     OPFData = OPFData or OPF.ResetSavedVariables()
 
@@ -73,7 +93,7 @@ local function InitializeAddon()
     local _SendChatMessage = SendChatMessage;
 
     -- override the original function
-    function SendChatMessage(message, ...)
+    function SendChatMessage(message, chatType, ...)
         if (pcall(function() message = OPF.ReplaceWords(message) end)) then
         else
             print(
@@ -81,8 +101,17 @@ local function InitializeAddon()
             _SendChatMessage(message, ...)
         end
 
-        _SendChatMessage(message, ...)
+        if (OPFData["shouldSelfMuteInInstance"] and IsInInstance()) then
+            -- Allow party and guild chat even in instance
+            if chatType == "PARTY" or chatType == "GUILD" or chatType ==
+                "PARTY_LEADER" then
+            else
+                -- Block message for other chat types (e.g., instance chat)
+                return
+            end
+        end
 
+        _SendChatMessage(message, chatType, ...)
     end
 
     -- Function to show the main frame
@@ -90,6 +119,9 @@ local function InitializeAddon()
         -- set checkbox states on UI open
         OPF.SetReplaceByMatchCheckButtonStates()
         OPF.SetSelfMuteCheckButtonState(OPFData["shouldSelfMute"])
+        OPF.SetSelfMuteInInstanceCheckButtonState(
+            OPFData["shouldSelfMuteInInstance"])
+
         ShowUIPanel(OPFConfigFrame)
     end
 

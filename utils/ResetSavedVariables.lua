@@ -4,7 +4,8 @@ local function ResetSavedVariables()
         wordsToReplaceWithOverridesTable = {},
         defaultWordReplacement = "*",
         shouldReplaceByExactWordMatch = false,
-        shouldSelfMute = false
+        shouldSelfMute = false,
+        shouldSelfMuteInInstance = false
     }
 end
 
