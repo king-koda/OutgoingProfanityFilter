@@ -1,23 +1,16 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
 	<Frame name="WordsToReplaceUI" frameStrata="DIALOG" hidden="true" enableMouse="true" clampedToScreen="true" toplevel="true" inherits="BackdropTemplate, BasicFrameTemplateWithInset">
 		<Size>
-			<AbsDimension x="400" y="300" />
+			<AbsDimension x="400" y="350" />
 		</Size>
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString name="WordsToReplaceFrameTitle" inherits="GameFontGreen" text="Outgoing Profanity Filter">
+				<FontString name="WordsToReplaceUIFrameTitle" inherits="GameFontNormalLarge" text="Words To Replace">
 					<Anchors>
 						<Anchor point="TOP" relativePoint="TOP" x="0" y="-5" />
 					</Anchors>
 				</FontString>
-			</Layer>
-			<Layer level="OVERLAY">
-				<FontString name="WordsToReplaceUISubtitle" inherits="GameFontNormalLarge" text="Words To Replace">
-					<Anchors>
-						<Anchor point="TOP" relativeTo="$parent" relativePoint="TOP" x="0" y="-40" />
-					</Anchors>
-				</FontString>
-			</Layer>
+			</Layer>			
 		</Layers>
 		<Frames>
 			<Button name="WordsToReplaceInfoIconButton" inherits="UIPanelButtonTemplate" text="i">
@@ -53,7 +46,7 @@
 						else
 						self.Instructions:SetText("Search")
 						end
-						OPF.WTR.UpdateTextArea()
+						OPF.UpdateTextArea("WTR")
 					</OnTextChanged>
 					<OnEscapePressed>
 						if self:GetText() ~= "" then
@@ -63,7 +56,7 @@
 						end
 					</OnEscapePressed>
 					<OnEnterPressed>
-						OPF.WTR.FocusSearchResult(1)
+						OPF.FocusSearchResult(1, "WTR")
 					</OnEnterPressed>
 				</Scripts>
 			</EditBox>
@@ -128,7 +121,7 @@
 				</Anchors>
 				<Scripts>
 					<OnClick>
-						OPF.WTR.FocusSearchResult(-1)
+						OPF.FocusSearchResult(-1, "WTR")
 					</OnClick>
 				</Scripts>
 			</Button>
@@ -141,7 +134,7 @@
 				</Anchors>
 				<Scripts>
 					<OnClick>
-						OPF.WTR.FocusSearchResult(1)
+						OPF.FocusSearchResult(1, "WTR")
 					</OnClick>
 					/>
 				</Scripts>

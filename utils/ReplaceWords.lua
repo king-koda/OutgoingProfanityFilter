@@ -65,6 +65,30 @@ local function ReplaceWordsByPartialMatch(message)
     return message
 end
 
+local function ReplaceWordsNotAllowed(message)
+    local words = GetWordsFromMessage(message)
+    local replacement = ""
+
+    for word in words do
+        local escapedMessageWord = OPF.EscapeText(string.lower(word))
+
+        local isNonSpecial = escapedMessageWord:match("^[%w_]+$") ~= nil
+        if (isNonSpecial) then
+            -- treat words differently to match on the whole word
+            escapedMessageWord = "%f[%a]" .. escapedMessageWord .. "%f[%A]"
+        end
+
+        -- check if the word in the message exists in the list of words to replace
+        local wordShouldBeReplaced =
+            OPFData["allowedWordsWhileMutedTable"][word] == nil
+
+        if (wordShouldBeReplaced) then
+            message = message:gsub(escapedMessageWord, replacement)
+        end
+    end
+    return message
+end
+
 local function ReplaceWordsByExactMatch(message)
     local words = GetWordsFromMessage(message)
     local replacement = OPFData["defaultWordReplacement"]
@@ -102,8 +126,6 @@ local function ReplaceWordsByExactMatch(message)
 end
 
 local function ReplaceWords(modifiedMessage)
-    if (OPFData["shouldSelfMute"]) then return "" end
-
     if (OPFData["shouldReplaceByExactWordMatch"]) then
         modifiedMessage = ReplaceWordsByExactMatch(modifiedMessage)
     else
@@ -114,3 +136,4 @@ local function ReplaceWords(modifiedMessage)
 end
 
 OPF.ReplaceWords = ReplaceWords
+OPF.ReplaceWordsNotAllowed = ReplaceWordsNotAllowed

@@ -1,33 +1,8 @@
--- removes words that are no longer in the text area from the overrides table
-local function PruneExistingTable(text)
-    for word, override in pairs(OPFData["wordsToReplaceWithOverridesTable"]) do
-        local escapedWord = OPF.EscapeText(word)
-        if not (string.find(text, "%f[%a]" .. escapedWord .. "%f[%A]")) then
-            OPFData["wordsToReplaceWithOverridesTable"][word] = nil
-        end
-    end
-end
-
 -- function for saving and reloading the addon after inserting new words to replace
 local function WordsToReplaceSave()
     local textArea = _G["WordsToReplaceTextArea"]
-    -- table to track if value in parsed string has already been encountered
-    local seen = {}
 
-    local text = textArea:GetText()
-
-    -- Pattern to match the color-coded text
-    local colorCodePattern = "|cff0000ff(.-)|r"
-    -- remove the color coding artifacts from search/highlighting before parsing the text
-    text = string.gsub(text, colorCodePattern, "%1")
-
-    -- Remove newlines
-    text = string.gsub(text, "\n", "")
-    -- Remove spaces
-    text = string.gsub(text, "%s", "")
-
-    -- TODO: should this be added back.... more testing required
-    -- text = OPF.EscapeText(text)
+    local text = OPF.SanitizeString(textArea)
 
     if (text == "") then
         OPFData["wordsToReplaceWithOverridesTable"] = {}
@@ -35,25 +10,44 @@ local function WordsToReplaceSave()
     end
 
     -- removes words that are no longer in the text area
-    PruneExistingTable(text)
+    OPF.PruneExistingTable(text, OPFData["wordsToReplaceWithOverridesTable"])
 
-    local wordsToReplaceTable = {}
-    local newWords = string.gmatch(text, "([^,]+)")
-    for word in newWords do
-        -- if seen already, skip
-        if not (seen[word]) then
-            table.insert(wordsToReplaceTable, word)
-
-            -- if the word is not already in the overrides table, add it with a nil value
-            if (OPFData["wordsToReplaceWithOverridesTable"][word] == nil) then
-                OPFData["wordsToReplaceWithOverridesTable"][word] = OPF.NIL
-            end
-
-            seen[word] = true
+    local function OnMatch(word)
+        -- if the word is not already in the overrides table, add it with a nil value
+        if (OPFData["wordsToReplaceWithOverridesTable"][word] == nil) then
+            OPFData["wordsToReplaceWithOverridesTable"][word] = OPF.NIL
         end
     end
 
-    OPFData["wordsToReplaceString"] = table.concat(wordsToReplaceTable, ",")
+    local newTable = OPF.StringToArrayWithDedupe(text, OnMatch)
+
+    OPFData["wordsToReplaceString"] = table.concat(newTable, ",")
+end
+
+-- function for saving and reloading the addon after inserting the allowed words while muted
+local function SelfMuteOptionsSave()
+    local textArea = _G["SelfMuteOptionsTextArea"]
+
+    local text = OPF.SanitizeString(textArea)
+
+    if (text == "") then
+        OPFData["allowedWordsWhileMutedTable"] = {}
+        OPFData["allowedWordsWhileMutedString"] = ""
+    end
+
+    -- removes words that are no longer in the text area
+    OPF.PruneExistingTable(text, OPFData["allowedWordsWhileMutedTable"])
+
+    local function OnMatch(word)
+        -- if the word is not already in the overrides table, add it with a nil value
+        if (OPFData["allowedWordsWhileMutedTable"][word] == nil) then
+            OPFData["allowedWordsWhileMutedTable"][word] = OPF.NIL
+        end
+    end
+
+    local newTable = OPF.StringToArrayWithDedupe(text, OnMatch)
+
+    OPFData["allowedWordsWhileMutedString"] = table.concat(newTable, ",")
 end
 
 -- function for saving and reloading the addon after inserting the default word replacement
@@ -92,3 +86,4 @@ end
 OPF.WTR.Save = WordsToReplaceSave
 OPF.DWR.Save = DefaultWordReplacementSave
 OPF.WRO.Save = WordReplacementOverridesSave
+OPF.SMO.Save = SelfMuteOptionsSave

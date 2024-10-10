@@ -1,20 +1,13 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
     <Frame name="DefaultWordReplacementUI" frameStrata="DIALOG" hidden="true" enableMouse="true" clampedToScreen="true" toplevel="true" inherits="BackdropTemplate, BasicFrameTemplateWithInset">
         <Size>
-            <AbsDimension x="400" y="300"/>
+            <AbsDimension x="400" y="350"/>
         </Size>
         <Layers>
             <Layer level="OVERLAY">
-                <FontString name="DefaultWordReplacementTitle" inherits="GameFontGreen" text="Outgoing Profanity Filter">
+                <FontString name="DefaultWordReplacementTitle" inherits="GameFontNormalLarge" text="Default Word Replacement">
                     <Anchors>
                         <Anchor point="TOP" relativePoint="TOP" x="0" y="-5"/>
-                    </Anchors>
-                </FontString>
-            </Layer>
-            <Layer level="OVERLAY">
-                <FontString name="DefaultWordReplacementUISubtitle" inherits="GameFontNormalLarge" text="Default Word Replacement">
-                    <Anchors>
-                        <Anchor point="TOP" relativeTo="$parent" relativePoint="TOP" x="0" y="-40"/>
                     </Anchors>
                 </FontString>
             </Layer>

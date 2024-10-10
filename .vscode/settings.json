@@ -1,9 +1,6 @@
 {
   "Lua.diagnostics.globals": [
     "SlashCmdList",
-    "C_KeyBindings",
-    "print",
-    "pairs",
     "DEFAULT_CHAT_FRAME",
     "InterfaceOptions_AddCategory",
     "Settings",
@@ -12,18 +9,15 @@
     "ReloadUI",
     "UIPanelWindows",
     "UISpecialFrames",
-    "CreateFrame",
     "xx",
     "StaticPopupDialogs",
-    "_G",
     "ShowUIPanel",
-    "string",
-    "ipairs",
-    "math",
-    "table",
     "message",
-    "pcall",
-    "StaticPopup_Show"
+    "StaticPopup_Show",
+    "Event",
+    "PARTY",
+    "PARTY_LEADER",
+    "SAY"
   ],
   "Lua.runtime.version": "Lua 5.1",
   "Lua.runtime.builtin": {
@@ -38,6 +32,6 @@
     "utf8": "disable"
   },
   "Lua.workspace.library": [
-    "~\\.vscode\\extensions\\ketho.wow-api-0.16.6\\Annotations"
+    "~\\.vscode\\extensions\\ketho.wow-api-0.17.6\\Annotations"
   ]
 }

@@ -1,27 +1,20 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
     <Frame name="WordReplacementOverridesUI" frameStrata="DIALOG" hidden="true" enableMouse="true" clampedToScreen="true" toplevel="true" inherits="BackdropTemplate, BasicFrameTemplateWithInset">
         <Size>
-            <AbsDimension x="400" y="300"/>
+            <AbsDimension x="400" y="350"/>
         </Size>
         <Layers>
             <Layer level="OVERLAY">
-                <FontString name="WordReplacementOverridesUITitle" inherits="GameFontGreen" text="Outgoing Profanity Filter">
+                <FontString name="WordReplacementOverridesUITitle" inherits="GameFontNormalLarge" text="Replacement Overrides">
                     <Anchors>
                         <Anchor point="TOP" relativePoint="TOP" x="0" y="-5"/>
                     </Anchors>
                 </FontString>
             </Layer>
             <Layer level="OVERLAY">
-                <FontString name="WordReplacementOverridesUISubtitle" inherits="GameFontNormalLarge" text="Replacement Overrides">
-                    <Anchors>
-						<Anchor point="TOP" relativeTo="$parent" relativePoint="TOP" x="0" y="-40" />
-                    </Anchors>
-                </FontString>
-            </Layer>
-            <Layer level="OVERLAY">
                 <FontString name="WordReplacementOverridesUICurrentCharacterText" inherits="GameFontHighlightSmall">
                     <Anchors>
-                        <Anchor point="TOP" relativePoint="TOP" x="0" y="-60"/>
+                        <Anchor point="TOP" relativePoint="TOP" x="0" y="-50"/>
                     </Anchors>
                 </FontString>
             </Layer>
@@ -47,7 +40,7 @@
             </Button>
             <ScrollFrame name="WordReplacementOverridesScrollFrame" inherits="UIPanelScrollFrameTemplate">
                 <Size>
-                    <AbsDimension x="360" y="155"/>
+                    <AbsDimension x="360" y="200"/>
                 </Size>
                 <Anchors>
                     <Anchor point="TOPLEFT" relativePoint="TOPLEFT" x="0" y="-75"/>

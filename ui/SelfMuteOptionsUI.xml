@@ -1,0 +1,401 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <Frame name="SelfMuteOptionsUI" frameStrata="DIALOG" hidden="true" enableMouse="true" clampedToScreen="true" toplevel="true" inherits="BackdropTemplate, BasicFrameTemplateWithInset">
+        <Size>
+            <AbsDimension x="400" y="350" />
+        </Size>
+        <Layers>
+            <Layer level="OVERLAY">
+                <FontString name="SelfMuteOptionsFrameTitle" inherits="GameFontNormalLarge" text="Self Mute">
+                    <Anchors>
+                        <Anchor point="TOP" relativePoint="TOP" x="0" y="-5" />
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+        <Frames>
+            <Frame name="SelfMuteLeftColumn">
+                <Size>
+                    <AbsDimension x="200" y="350" />
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="SelfMuteOptionsUI" relativePoint="TOPLEFT" x="0" y="0" />
+                </Anchors>
+                <Layers>
+                    <Layer level="OVERLAY">
+                        <FontString name="SelfMuteOptionsUIAllowedWordsTitle" inherits="GameFontNormalLarge" text="Allowed Words">
+                            <Anchors>
+                                <Anchor point="TOP" relativeTo="SelfMuteLeftColumn" relativePoint="TOP" x="0" y="-40" />
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+                </Layers>
+                <Frames>
+                    <EditBox name="SelfMuteOptionsSearchBox" inherits="SearchBoxTemplate" autoFocus="false">
+                        <Size>
+                            <AbsDimension x="148" y="20" />
+                        </Size>
+                        <Anchors>
+                            <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT" x="15" y="-70" />
+                        </Anchors>
+                        <Scripts>
+                            <OnTextChanged>
+                                if self:GetText() ~= "" then
+                                    self.Instructions:SetText("")
+                                else
+                                    self.Instructions:SetText("Search")
+                                end
+						        OPF.UpdateTextArea("SMO")
+					        </OnTextChanged>
+                            <OnEscapePressed>
+						        if self:GetText() ~= "" then
+						            self:SetText("")
+						        else
+						            self:ClearFocus()
+						        end
+                            </OnEscapePressed>
+                            <OnEnterPressed>
+						        OPF.FocusSearchResult(1, "SMO")
+					        </OnEnterPressed>
+                        </Scripts>
+                    </EditBox>
+                    <Button name="SelfMuteOptionsPreviousSearchResultButton" inherits="UIPanelButtonTemplate" text="&lt;">
+                        <Size>
+                            <AbsDimension x="20" y="20" />
+                        </Size>
+                        <Anchors>
+                            <Anchor point="RIGHT" relativeTo="SelfMuteOptionsSearchBox" relativePoint="RIGHT" x="20" y="0" />
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+						OPF.FocusSearchResult(-1, "SMO")
+					</OnClick>
+                        </Scripts>
+                    </Button>
+                    <Button name="SelfMuteOptionsNextSearchResultButton" inherits="UIPanelButtonTemplate" text="&gt;">
+                        <Size>
+                            <AbsDimension x="20" y="20" />
+                        </Size>
+                        <Anchors>
+                            <Anchor point="RIGHT" relativeTo="SelfMuteOptionsSearchBox" relativePoint="RIGHT" x="40" y="0" />
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+						OPF.FocusSearchResult(1, "SMO")
+					</OnClick>
+					/>
+                        </Scripts>
+                    </Button>
+                    <ScrollFrame name="SelfMuteOptionsScrollFrame" inherits="UIPanelScrollFrameTemplate">
+                        <Anchors>
+                            <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT" x="11" y="-95" />
+                            <Anchor point="BOTTOMRIGHT" relativeTo="$parent" relativePoint="BOTTOMRIGHT" x="-21" y="40" />
+                        </Anchors>
+                        <ScrollChild name="SelfMuteOptionsTextAreaScrollChild">
+                            <EditBox name="SelfMuteOptionsTextArea" inherits="BackdropTemplate" multiLine="true" autoFocus="false">
+                                <Size>
+                                    <AbsDimension x="179" y="350" />
+                                </Size>
+                                <Anchors>
+                                    <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT" x="0" y="0" />
+                                    <Anchor point="BOTTOMRIGHT" relativeTo="$parent" relativePoint="BOTTOMRIGHT" x="-20" y="0" />
+                                </Anchors>
+                                <FontString inherits="ChatFontNormal" />
+                                <Scripts>
+                                    <OnEscapePressed>
+								self:ClearFocus()
+							</OnEscapePressed>
+                                </Scripts>
+                            </EditBox>
+                        </ScrollChild>
+                    </ScrollFrame>
+                </Frames>
+            </Frame>
+            <Frame name="SelfMuteRightColumn">
+                <Layers>
+                    <Layer level="OVERLAY">
+                        <FontString name="SelfMuteOptionsUIToggleTitle" inherits="GameFontNormalLarge" text="Toggle">
+                            <Anchors>
+                                <Anchor point="TOP" relativeTo="SelfMuteRightColumn" relativePoint="TOP" x="0" y="-40" />
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+                    <Layer level="OVERLAY">
+                        <FontString name="SelfMuteOptionsUIToggleSelfMuteCheckBoxLabel" inherits="GameFontHighlight" justifyH="LEFT" text="Self Mute">
+                            <Size>
+                                <AbsDimension x="120" y="35" />
+                            </Size>
+                            <Anchors>
+                                <Anchor point="TOP" relativeTo="SelfMuteRightColumn" relativePoint="TOP" x="-5" y="-80" />
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+                    <Layer level="OVERLAY">
+                        <FontString name="AllowedChannelsLabel" inherits="GameFontHighlight" justifyH="LEFT" text="Allowed Channels">
+                            <Size>
+                                <AbsDimension x="120" y="35" />
+                            </Size>
+                            <Anchors>
+                                <Anchor point="TOP" relativeTo="SelfMuteRightColumn" relativePoint="TOP" x="-5" y="-130" />
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+                    <Layer level="OVERLAY">
+                        <FontString name="SelfMuteChannelWhisperCheckBoxLabel" inherits="GameFontGreen" justifyH="LEFT" text="Whisper">
+                            <Size>
+                                <AbsDimension x="120" y="35" />
+                            </Size>
+                            <Anchors>
+                                <Anchor point="TOP" relativeTo="SelfMuteRightColumn" relativePoint="TOP" x="-5" y="-160" />
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+                    <Layer level="OVERLAY">
+                        <FontString name="SelfMuteChannelGuildCheckBoxLabel" inherits="GameFontGreen" justifyH="LEFT" text="Guild">
+                            <Size>
+                                <AbsDimension x="120" y="35" />
+                            </Size>
+                            <Anchors>
+                                <Anchor point="TOP" relativeTo="SelfMuteRightColumn" relativePoint="TOP" x="-5" y="-190" />
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+                    <Layer level="OVERLAY">
+                        <FontString name="SelfMuteChannelYellCheckBoxLabel" inherits="GameFontGreen" justifyH="LEFT" text="Yell">
+                            <Size>
+                                <AbsDimension x="120" y="35" />
+                            </Size>
+                            <Anchors>
+                                <Anchor point="TOP" relativeTo="SelfMuteRightColumn" relativePoint="TOP" x="-5" y="-220" />
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+                    <Layer level="OVERLAY">
+                        <FontString name="SelfMuteChannelSayCheckBoxLabel" inherits="GameFontGreen" justifyH="LEFT" text="Say">
+                            <Size>
+                                <AbsDimension x="120" y="35" />
+                            </Size>
+                            <Anchors>
+                                <Anchor point="TOP" relativeTo="SelfMuteRightColumn" relativePoint="TOP" x="-5" y="-250" />
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+                    <Layer level="OVERLAY">
+                        <FontString name="SelfMuteChannelPartyCheckBoxLabel" inherits="GameFontGreen" justifyH="LEFT" text="Party">
+                            <Size>
+                                <AbsDimension x="120" y="35" />
+                            </Size>
+                            <Anchors>
+                                <Anchor point="TOP" relativeTo="SelfMuteRightColumn" relativePoint="TOP" x="-5" y="-280" />
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+                    <!-- <Layer level="OVERLAY">
+                        <FontString name="SelfMuteChannelWhisperCheckBoxLabel" inherits="GameFontGreen" justifyH="LEFT" text="WHISPER">
+                            <Size>
+                                <AbsDimension x="120" y="35" />
+                            </Size>
+                            <Anchors>
+                                <Anchor point="TOP" relativeTo="SelfMuteRightColumn" relativePoint="TOP" x="50" y="-160" />
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+                    <Layer level="OVERLAY">
+                        <FontString name="SelfMuteChannelWhisperCheckBoxLabel" inherits="GameFontGreen" justifyH="LEFT" text="WHISPER">
+                            <Size>
+                                <AbsDimension x="120" y="35" />
+                            </Size>
+                            <Anchors>
+                                <Anchor point="TOP" relativeTo="SelfMuteRightColumn" relativePoint="TOP" x="50" y="-160" />
+                            </Anchors>
+                        </FontString>
+                    </Layer> -->
+                </Layers>
+                <Size>
+                    <AbsDimension x="200" y="350" />
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPRIGHT" relativeTo="SelfMuteOptionsUI" relativePoint="TOPRIGHT" x="0" y="0" />
+                </Anchors>
+                <Frames>
+                    <CheckButton name="OPFToggleSelfMute">
+                        <Size>
+                            <AbsDimension x="40" y="40" />
+                        </Size>
+                        <Anchors>
+                            <Anchor point="TOPRIGHT" relativeTo="SelfMuteRightColumn" relativePoint="TOPRIGHT" x="-15" y="-80" />
+                        </Anchors>
+                        <NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
+                        <PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
+                        <HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD" />
+                        <CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
+                        <Scripts>
+                            <OnClick>
+								if(OPFToggleSelfMute:GetChecked()) then
+									StaticPopup_Show("CONFIRM_SELF_MUTE")
+								else
+									OPF.ToggleSelfMute()
+								end
+							</OnClick>
+                            <OnEnter>
+								local x, y = GetCursorPosition()
+								GameTooltip:SetOwner(self, "ANCHOR_CURSOR_RIGHT")
+								GameTooltip:SetText("An option to self-mute in-game.\n\nWARNING:\nIf enabled, you will not be able to disable the option whilst in any instance (for the sake of self-preservation).",nil,nil,nil,nil,true)
+								GameTooltip:Show()
+							</OnEnter>
+                            <OnLeave>
+								GameTooltip:Hide()
+							</OnLeave>
+                        </Scripts>
+                    </CheckButton>
+                    <CheckButton name="SelfMuteToggleChannelWhisper">
+                        <Size>
+                            <AbsDimension x="40" y="40" />
+                        </Size>
+                        <Anchors>
+                            <Anchor point="TOPRIGHT" relativeTo="SelfMuteRightColumn" relativePoint="TOPRIGHT" x="-15" y="-160" />
+                        </Anchors>
+                        <NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
+                        <PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
+                        <HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD" />
+                        <CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
+                        <Scripts>
+                            <OnClick>
+                                  local state = OPF.ToggleChannelState("WHISPER")
+                                <!-- if successful -->
+                                if(state) then
+                                    OPF.ToggleChannelState("BN_WHISPER")
+                                end
+                                self:SetChecked(state)
+                            </OnClick>
+                        </Scripts>
+                    </CheckButton>
+                     <CheckButton name="SelfMuteToggleChannelGuild">
+                        <Size>
+                            <AbsDimension x="40" y="40" />
+                        </Size>
+                        <Anchors>
+                            <Anchor point="TOPRIGHT" relativeTo="SelfMuteRightColumn" relativePoint="TOPRIGHT" x="-15" y="-190" />
+                        </Anchors>
+                        <NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
+                        <PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
+                        <HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD" />
+                        <CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
+                        <Scripts>
+                            <OnClick>
+                                  local state = OPF.ToggleChannelState("GUILD")
+                                <!-- if successful -->
+                                if(state) then
+                                    OPF.ToggleChannelState("OFFICER")
+                                end
+                                self:SetChecked(state)
+                            </OnClick>
+                        </Scripts>
+                    </CheckButton>
+                     <CheckButton name="SelfMuteToggleChannelYell">
+                        <Size>
+                            <AbsDimension x="40" y="40" />
+                        </Size>
+                        <Anchors>
+                            <Anchor point="TOPRIGHT" relativeTo="SelfMuteRightColumn" relativePoint="TOPRIGHT" x="-15" y="-220" />
+                        </Anchors>
+                        <NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
+                        <PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
+                        <HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD" />
+                        <CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
+                        <Scripts>
+                            <OnClick>
+                                  local state = OPF.ToggleChannelState("YELL")
+                                self:SetChecked(state)
+                            </OnClick>
+                        </Scripts>
+                    </CheckButton>
+                     <CheckButton name="SelfMuteToggleChannelSay">
+                        <Size>
+                            <AbsDimension x="40" y="40" />
+                        </Size>
+                        <Anchors>
+                            <Anchor point="TOPRIGHT" relativeTo="SelfMuteRightColumn" relativePoint="TOPRIGHT" x="-15" y="-250" />
+                        </Anchors>
+                        <NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
+                        <PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
+                        <HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD" />
+                        <CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
+                         <Scripts>
+                            <OnClick>
+                                local state = OPF.ToggleChannelState("SAY")
+                                self:SetChecked(state)
+                            </OnClick>
+                        </Scripts>
+                    </CheckButton>
+                     <CheckButton name="SelfMuteToggleChannelParty">
+                        <Size>
+                            <AbsDimension x="40" y="40" />
+                        </Size>
+                        <Anchors>
+                            <Anchor point="TOPRIGHT" relativeTo="SelfMuteRightColumn" relativePoint="TOPRIGHT" x="-15" y="-280" />
+                        </Anchors>
+                        <NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
+                        <PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
+                        <HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD" />
+                        <CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
+                        <Scripts>
+                            <OnClick>
+                                local state = OPF.ToggleChannelState("PARTY")
+                                <!-- if successful -->
+                                if(state) then
+                                    OPF.ToggleChannelState("PARTY_LEADER")
+                                end
+                                self:SetChecked(state)
+                            </OnClick>
+                        </Scripts>
+                    </CheckButton>
+                </Frames>
+            </Frame>
+            <Button name="SelfMuteOptionsInfoIconButton" inherits="UIPanelButtonTemplate" text="i">
+                <Size>
+                    <AbsDimension x="20" y="16" />
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPRIGHT" relativeTo="SelfMuteOptionsUI" relativePoint="TOPRIGHT" x="-15" y="-40" />
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+						GameTooltip:SetOwner(self, "ANCHOR_NONE")
+						GameTooltip:SetPoint("TOP", SelfMuteOptionsInfoIconButton, "BOTTOM", 0, -10)
+						GameTooltip:SetText("Toggling on self mute enables the user to have all text except those in the allowed word list to be blocked from all channels.\n\nAdding words to the allowed words list (comma separated) allows only certain words to broadcast on any channel when self mute is toggled on, bypassing normal self mute restrictions.\n\nChoosing the allowed channels determines which channels shouldn't have self mute restrictions applied to them, allowing all text to be broadcasted on those channels whilst still leveraging the normal word replacement feature of the addon if already configured.\n\IMPORTANT: Instance and Raid chat is always blocked when self mute is enabled, with only allowed words being able to bypass the mute.",1,1,1,1,true)
+						GameTooltip:Show()
+					</OnClick>
+                    <OnLeave>
+						GameTooltip:Hide()
+					</OnLeave>
+                </Scripts>
+            </Button>
+            <Button name="SelfMuteOptionsBackButton" inherits="UIPanelButtonTemplate" text="Back">
+                <Size>
+                    <AbsDimension x="60" y="22"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="BOTTOM" relativePoint="BOTTOM" x="-40" y="10"/>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        OPF.ShowConfigFrame()
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <Button name="SelfMuteOptionsSaveButton" inherits="UIPanelButtonTemplate" text="Save">
+                <Size>
+                    <AbsDimension x="60" y="22"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="BOTTOM" relativePoint="BOTTOM" x="40" y="10"/>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        OPF.SMO.Save()
+                    </OnClick>
+                </Scripts>
+            </Button>
+        </Frames>
+    </Frame>
+</Ui>

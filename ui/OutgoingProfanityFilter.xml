@@ -5,19 +5,18 @@
 			<AbsDimension x="400" y="350" />
 		</Size>
 		<Layers>
-			<Layer level="OVERLAY">
-				<FontString name="OPFConfigFrameTitle" inherits="GameFontGreen" text="Outgoing Profanity Filter">
-					<Anchors>
-						<Anchor point="TOP" relativePoint="TOP" x="0" y="-5" />
-					</Anchors>
-                   
-				</FontString>
-			</Layer>
+			 <Layer level="OVERLAY">
+                <FontString name="OPFConfigFrameTitle" inherits="GameFontNormalLarge" text="Outgoing Profanity Filter">
+                    <Anchors>
+                        <Anchor point="TOP" relativePoint="TOP" x="0" y="-5" />
+                    </Anchors>
+                </FontString>
+            </Layer>
 		</Layers>
 		<Frames>
 			<Frame name="OPFConfigLeftColumn">
 				<Size>
-					<AbsDimension x="200" y="300" />
+					<AbsDimension x="200" y="350" />
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="OPFConfigFrame" relativePoint="TOPLEFT" x="0" y="0" />
@@ -101,12 +100,34 @@
 							</OnLeave>
 						</Scripts>
 					</Button>
-                   
+                   <Button name="ShowSelfMuteOptionsUIButton" inherits="GameMenuButtonTemplate" text="Self Mute">
+						<Size>
+							<AbsDimension x="160" y="35" />
+						</Size>
+						<Anchors>
+							<Anchor point="TOP" relativeTo="OPFConfigLeftColumn" relativePoint="TOP" x="0" y="-230" />
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								OPF.ShowSelfMuteOptionsUI()
+							</OnClick>
+							<OnEnter>
+								local x, y = GetCursorPosition()
+								GameTooltip:SetOwner(self, "ANCHOR_NONE")
+								GameTooltip:SetPoint("TOP", ShowSelfMuteOptionsUIButton, "TOP", 0, 35)
+								GameTooltip:SetText("Toggle self mute, and configure options related to it.")
+								GameTooltip:Show()
+							</OnEnter>
+							<OnLeave>
+								GameTooltip:Hide()
+							</OnLeave>
+						</Scripts>
+					</Button>
 				</Frames>
 			</Frame>
 			<Frame name="OPFConfigRightColumn">
 				<Size>
-					<AbsDimension x="200" y="300" />
+					<AbsDimension x="200" y="350" />
 				</Size>
 				<Anchors>
 					<Anchor point="TOPRIGHT" relativeTo="OPFConfigFrame" relativePoint="TOPRIGHT" x="0" y="0" />
@@ -139,26 +160,7 @@
 							</Anchors>
 						</FontString>
 					</Layer>
-                    <Layer level="OVERLAY">
-						<FontString name="OPFToggleSelfMuteCheckBoxLabel" inherits="GameFontHighlight" justifyH="LEFT" text="Self Mute">
-							<Size>
-								<AbsDimension x="120" y="35" />
-							</Size>
-							<Anchors>
-								<Anchor point="TOP" relativeTo="OPFConfigRightColumn" relativePoint="TOP" x="-5" y="-180" />
-							</Anchors>
-						</FontString>
-					</Layer>
-					<Layer level="OVERLAY">
-						<FontString name="OPFToggleSelfMuteInInstanceCheckBoxLabel" inherits="GameFontHighlight" justifyH="LEFT" text="Self Mute In Instance">
-							<Size>
-								<AbsDimension x="120" y="35" />
-							</Size>
-							<Anchors>
-								<Anchor point="TOP" relativeTo="OPFConfigRightColumn" relativePoint="TOP" x="-5" y="-230" />
-							</Anchors>
-						</FontString>
-					</Layer>
+                    
 				</Layers>
 				<Frames>
 					<CheckButton name="OPFTogglePartialMatchCheckBox" >
@@ -206,66 +208,6 @@
 								local x, y = GetCursorPosition()
 								GameTooltip:SetOwner(self, "ANCHOR_CURSOR_RIGHT")
 								GameTooltip:SetText("An option to force the replacement algorithm to require the exact word in a message in order to be replaced.\n\nPartial Matching and Exact Matching cannot both be enabled at the same time. \n\nEXAMPLE:\n* Word List: 'cow,goat,chicken'\n* Replacement: '$$$'\n* Original Message:\n'Look at that chicken with the goatee, what a coward'\n* Modified Message:\n'Look at that $$$ with the goatee, what a coward'",nil,nil,nil,nil,true)
-								GameTooltip:Show()
-							</OnEnter>
-							<OnLeave>
-								GameTooltip:Hide()
-							</OnLeave>
-						</Scripts>
-					</CheckButton>
-                    <CheckButton name="OPFToggleSelfMute">
-						<Size>
-							<AbsDimension x="40" y="40" />
-						</Size>
-						<Anchors>
-							<Anchor point="TOPRIGHT" relativeTo="OPFConfigRightColumn" relativePoint="TOPRIGHT" x="-15" y="-180" />
-						</Anchors>
-						<NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
-						<PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
-						<HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD" />
-						<CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
-						<Scripts>
-							<OnClick>
-								if(OPFToggleSelfMute:GetChecked()) then
-									StaticPopup_Show("CONFIRM_SELF_MUTE")
-								else
-									OPF.ToggleSelfMute()
-								end
-							</OnClick>
-							<OnEnter>
-								local x, y = GetCursorPosition()
-								GameTooltip:SetOwner(self, "ANCHOR_CURSOR_RIGHT")
-								GameTooltip:SetText("An option to self-mute in-game.\n\nWARNING:\nIf enabled, you will not be able to disable the option whilst in any instance (for the sake of self-preservation).",nil,nil,nil,nil,true)
-								GameTooltip:Show()
-							</OnEnter>
-							<OnLeave>
-								GameTooltip:Hide()
-							</OnLeave>
-						</Scripts>
-					</CheckButton>
-					<CheckButton name="OPFToggleSelfMuteInInstance">
-						<Size>
-							<AbsDimension x="40" y="40" />
-						</Size>
-						<Anchors>
-							<Anchor point="TOPRIGHT" relativeTo="OPFConfigRightColumn" relativePoint="TOPRIGHT" x="-15" y="-230" />
-						</Anchors>
-						<NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
-						<PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
-						<HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD" />
-						<CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
-						<Scripts>
-							<OnClick>
-								if(OPFToggleSelfMuteInInstance:GetChecked()) then
-									StaticPopup_Show("CONFIRM_SELF_MUTE_IN_INSTANCE")
-								else
-									OPF.ToggleSelfMuteInInstance()
-								end
-							</OnClick>
-							<OnEnter>
-								local x, y = GetCursorPosition()
-								GameTooltip:SetOwner(self, "ANCHOR_CURSOR_RIGHT")
-								GameTooltip:SetText("An option to self-mute all channels when in an instance except in party and guild.\n\nWARNING:\nIf enabled, you will not be able to disable the option whilst in any instance (for the sake of self-preservation).",nil,nil,nil,nil,true)
 								GameTooltip:Show()
 							</OnEnter>
 							<OnLeave>

@@ -3,6 +3,7 @@ local OutgoingProfanityFilter, NS = ...
 local function InitializeAddon()
     UIPanelWindows["OPFConfigFrame"] = {area = "center", whileDead = true}
     UIPanelWindows["WordsToReplaceUI"] = {area = "center", whileDead = true}
+    UIPanelWindows["SelfMuteOptionsUI"] = {area = "center", whileDead = true}
     UIPanelWindows["DefaultWordReplacementUI"] = {
         area = "center",
         whileDead = true
@@ -46,28 +47,12 @@ local function InitializeAddon()
         area = "center"
     }
 
-    StaticPopupDialogs["CONFIRM_SELF_MUTE_IN_INSTANCE"] = {
-        text = "Are you sure you want to self-mute when in an instance? This option can not be disabled whilst in an instance (for the sake of self-preservation)",
-        button1 = "YES",
-        button2 = "NO",
-        OnAccept = function()
-            -- proceed with toggling on warning acceptance
-            OPF.ToggleSelfMuteInInstance()
-        end,
-        OnCancel = function()
-            -- reset button state on cancel
-            OPF.SetSelfMuteInInstanceCheckButtonState(
-                OPFData["shouldSelfMuteInInstance"])
-        end,
-        timeout = 0,
-        whileDead = true,
-        hideOnEscape = true,
-        preferredIndex = 3,
-        area = "center"
-    }
-
     -- Initialize saved variables
-    OPFData = OPFData or OPF.ResetSavedVariables()
+    if (OPFData) then
+        OPF.InitializeNewSavedVariables()
+    else
+        OPFData = OPF.ResetSavedVariables()
+    end
 
     local OPFConfigFrame = _G["OPFConfigFrame"]
 
@@ -94,24 +79,37 @@ local function InitializeAddon()
 
     -- override the original function
     function SendChatMessage(message, chatType, ...)
-        if (pcall(function() message = OPF.ReplaceWords(message) end)) then
-        else
-            print(
-                'ERROR: Outgoing Profanity Filter had an issue replacing the words in the previous sentence, please report this to the addon author on GitHub with your list of words or the culprit word, and the sentence it failed on.')
-            _SendChatMessage(message, ...)
-        end
+        if (OPFData["shouldSelfMute"]) then -- if self-mute everything is enabled, block everything
 
-        if (OPFData["shouldSelfMuteInInstance"] and IsInInstance()) then
-            -- Allow party and guild chat even in instance
-            if chatType == "PARTY" or chatType == "GUILD" or chatType ==
-                "PARTY_LEADER" then
+            -- Allow specified chat channels when in an instance
+            -- TODO: add this feature and make it dynamic here
+            if OPFData["allowedChannelsWhileMuted"][chatType] then
+                -- continue with normal word replacement for the allowed chat channels
+                if (pcall(function()
+                    message = OPF.ReplaceWords(message)
+                end)) then
+                    _SendChatMessage(message, chatType, ...)
+                else
+                    print(
+                        'ERROR: Outgoing Profanity Filter had an issue replacing the words in the previous sentence, please report this to the addon author on GitHub with your list of words or the culprit word, and the sentence it failed on.')
+                end
             else
-                -- Block message for other chat types (e.g., instance chat)
-                return
+                -- Block message for other chat types (e.g., instance chat) besides specifically allowed words
+                message = OPF.ReplaceWordsNotAllowed(message)
+                -- if the message is comprised of only whitespace, don't send it
+                if (message:gsub("%s", "") ~= "") then
+                    _SendChatMessage(message, chatType, ...)
+                end
+            end
+        else
+            -- replace words in message as required
+            if (pcall(function() message = OPF.ReplaceWords(message) end)) then
+                _SendChatMessage(message, chatType, ...)
+            else
+                print(
+                    'ERROR: Outgoing Profanity Filter had an issue replacing the words in the previous sentence, please report this to the addon author on GitHub with your list of words or the culprit word, and the sentence it failed on.')
             end
         end
-
-        _SendChatMessage(message, chatType, ...)
     end
 
     -- Function to show the main frame
@@ -119,8 +117,6 @@ local function InitializeAddon()
         -- set checkbox states on UI open
         OPF.SetReplaceByMatchCheckButtonStates()
         OPF.SetSelfMuteCheckButtonState(OPFData["shouldSelfMute"])
-        OPF.SetSelfMuteInInstanceCheckButtonState(
-            OPFData["shouldSelfMuteInInstance"])
 
         ShowUIPanel(OPFConfigFrame)
     end
@@ -132,6 +128,37 @@ local function InitializeAddon()
         local scrollFrame = _G["WordsToReplaceScrollFrame"]
         -- populate the text area with the current OPFData["wordsToReplaceString"]
         textArea:SetText(OPFData["wordsToReplaceString"] or "")
+        textArea:SetBackdrop({
+            bgFile = "Interface/Tooltips/UI-Tooltip-Background",
+            tileSize = 400,
+            insets = {left = -10, right = -10, top = -10, bottom = -400}
+        })
+
+        -- reset scrollbar position when opening words to replace UI
+        scrollFrame.ScrollBar:SetValue(0)
+
+        ShowUIPanel(ui)
+    end
+
+    -- Functions to show the individual frames
+    local function ShowSelfMuteOptionsUI()
+        local ui = _G["SelfMuteOptionsUI"]
+
+        -- enable checkboxes appropriately on UI open
+        _G["SelfMuteToggleChannelWhisper"]:SetChecked(
+            OPF.IsChannelAllowed("WHISPER"))
+        _G["SelfMuteToggleChannelGuild"]:SetChecked(
+            OPF.IsChannelAllowed("GUILD"))
+        _G["SelfMuteToggleChannelYell"]:SetChecked(OPF.IsChannelAllowed("YELL"))
+        _G["SelfMuteToggleChannelSay"]:SetChecked(OPF.IsChannelAllowed("SAY"))
+        _G["SelfMuteToggleChannelParty"]:SetChecked(
+            OPF.IsChannelAllowed("PARTY"))
+
+        local textArea = _G["SelfMuteOptionsTextArea"]
+        local scrollFrame = _G["SelfMuteOptionsScrollFrame"]
+
+        -- populate the text area with the current OPFData["wordsToReplaceString"]
+        textArea:SetText(OPFData["allowedWordsWhileMutedString"] or "")
         textArea:SetBackdrop({
             bgFile = "Interface/Tooltips/UI-Tooltip-Background",
             tileSize = 400,
@@ -175,6 +202,7 @@ local function InitializeAddon()
     OPF.ShowConfigFrame = ShowConfigFrame
     OPF.ShowDefaultWordReplacementUI = ShowDefaultWordReplacementUI
     OPF.ShowWordsToReplaceUI = ShowWordsToReplaceUI
+    OPF.ShowSelfMuteOptionsUI = ShowSelfMuteOptionsUI
     OPF.ShowWordReplacementOverridesUI = ShowWordReplacementOverridesUI
 end
 

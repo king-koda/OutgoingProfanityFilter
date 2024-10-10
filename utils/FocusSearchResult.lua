@@ -1,22 +1,31 @@
 -- Function to focus the next or previous search result
-local function FocusSearchResult(direction)
-    local textArea = _G["WordsToReplaceTextArea"]
-    local scrollFrame = _G["WordsToReplaceScrollFrame"]
+local function FocusSearchResult(direction, feature)
+    local textArea, scrollFrame
+    if feature == "WTR" then
+        textArea = _G["WordsToReplaceTextArea"]
+        scrollFrame = _G["WordsToReplaceScrollFrame"]
+    elseif feature == "SMO" then
+        textArea = _G["SelfMuteOptionsTextArea"]
+        scrollFrame = _G["SelfMuteOptionsScrollFrame"]
+    else
+        print("Invalid feature specified to Focus Search Result.")
+        return
+    end
 
-    if #OPF.searchResults == 0 then
+    if #OPF[feature].searchResults == 0 then
         print("No search results found.")
         return
     end
 
     -- Update the current index based on the direction
-    OPF.currentIndex = OPF.currentIndex + direction
-    if OPF.currentIndex > #OPF.searchResults then
-        OPF.currentIndex = 1
-    elseif OPF.currentIndex < 1 then
-        OPF.currentIndex = #OPF.searchResults
+    OPF[feature].currentIndex = OPF[feature].currentIndex + direction
+    if OPF[feature].currentIndex > #OPF[feature].searchResults then
+        OPF[feature].currentIndex = 1
+    elseif OPF[feature].currentIndex < 1 then
+        OPF[feature].currentIndex = #OPF[feature].searchResults
     end
 
-    local pos = OPF.searchResults[OPF.currentIndex]
+    local pos = OPF[feature].searchResults[OPF[feature].currentIndex]
     local currentText = textArea:GetText()
 
     -- end of the search results, reset scroll and cursor
@@ -50,4 +59,4 @@ local function FocusSearchResult(direction)
     scrollFrame.ScrollBar:SetValue(newScroll)
 end
 
-OPF.WTR.FocusSearchResult = FocusSearchResult
+OPF.FocusSearchResult = FocusSearchResult
