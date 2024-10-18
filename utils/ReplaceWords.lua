@@ -45,7 +45,7 @@ local function ReplaceWordsByPartialMatch(message)
                 -- use default replacement
             else
                 -- use the replacement override 
-                replacement = OPFData["wordsToReplaceWithOverridesTable"][word]
+                replacement = replacementOverride
             end
 
             -- tracks which match we are currently replacing
@@ -70,6 +70,7 @@ local function ReplaceWordsNotAllowed(message)
     local replacement = ""
 
     for word in words do
+        local originalWord = word
         local escapedMessageWord = OPF.EscapeText(string.lower(word))
 
         local isNonSpecial = escapedMessageWord:match("^[%w_]+$") ~= nil
@@ -80,10 +81,10 @@ local function ReplaceWordsNotAllowed(message)
 
         -- check if the word in the message exists in the list of words to replace
         local wordShouldBeReplaced =
-            OPFData["allowedWordsWhileMutedTable"][word] == nil
+            OPFData["allowedWordsWhileMutedTable"][string.lower(word)] == nil
 
         if (wordShouldBeReplaced) then
-            message = message:gsub(escapedMessageWord, replacement)
+            message = message:gsub(OPF.EscapeText(originalWord), replacement)
         end
     end
     return message
@@ -94,6 +95,7 @@ local function ReplaceWordsByExactMatch(message)
     local replacement = OPFData["defaultWordReplacement"]
 
     for word in words do
+        local originalWord = word
         local escapedMessageWord = OPF.EscapeText(string.lower(word))
 
         local isNonSpecial = escapedMessageWord:match("^[%w_]+$") ~= nil
@@ -104,21 +106,21 @@ local function ReplaceWordsByExactMatch(message)
 
         -- check if the word in the message exists in the list of words to replace
         local wordShouldBeReplaced =
-            OPFData["wordsToReplaceWithOverridesTable"][word] ~= nil
+            OPFData["wordsToReplaceWithOverridesTable"][string.lower(word)] ~=
+                nil
 
         if (wordShouldBeReplaced) then
             local replacementOverride =
-                OPFData["wordsToReplaceWithOverridesTable"][word]
+                OPFData["wordsToReplaceWithOverridesTable"][string.lower(word)]
 
             -- replacementOverride will never be nil from check above
             if (replacementOverride == " ") then
                 replacement = ""
             elseif (replacementOverride ~= OPF.NIL) then
                 -- if the override is OPF.NIL, then use the default replacement, otherwise use the override
-                replacement = OPFData["wordsToReplaceWithOverridesTable"][word]
+                replacement = replacementOverride
             end
-
-            message = message:gsub(escapedMessageWord, replacement)
+            message = message:gsub(OPF.EscapeText(originalWord), replacement)
         end
 
     end
